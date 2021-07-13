@@ -49,10 +49,10 @@ class MyLibraryComponent implements Component {
 You can also define your systems:
 
 ```ts
-import { Component, Family, System, FamilyBuilder } from "@nova-engine/ecs";
+import { Component, Signature, System, SignatureBuilder } from "@nova-engine/ecs";
 class GravitySystem extends System {
   static readonly DEFAULT_ACCELERATION = 0.98;
-  family?: Family;
+  signature?: Signature;
   acceleration: number;
 
   // Constructors are free for your own implementation
@@ -63,24 +63,24 @@ class GravitySystem extends System {
     this.priority = 300;
   }
   // This is called when a system is added to an engine, you may want to
-  // startup your families here.
+  // startup your signatures here.
   onAttach(engine: Engine) {
     // Needed to work properly
     super.onAttach(engine);
-    // Families are an easy way to have groups of entities with some criteria.
-    this.family = new FamilyBuilder(engine).include(VelocityComponent).build();
+    // Signatures are an easy way to have groups of entities with some criteria.
+    this.signature = new SignatureBuilder(engine).include(VelocityComponent).build();
   }
 
   // This, in reality is the only method your system must implement
-  // but using onAttach to prepare your families is useful.
+  // but using onAttach to prepare your signatures is useful.
   update(engine: Engine, delta: number) {
-    for (let entity of this.family.entities) {
+    for (let entity of this.signature.entities) {
       // Easy to get a component by class
       // Be warned, if the entity lacks this component, an error *will* be thrown.
-      // But families ensures than we will always have the required components.
+      // But signatures ensures than we will always have the required components.
       const velocity = entity.getComponent(VelocityComponent);
       velocity.y += this.acceleration;
-      // if the family doesn't require that component
+      // if the signature doesn't require that component
       // you can always check for it
       if (entity.hasComponent(PositionComponent)) {
         const position = entity.getComponent(PositionComponent);

@@ -4,8 +4,8 @@ declare abstract class System {
     private readonly _engines;
     constructor();
     get priority(): number;
-    get engines(): readonly Engine[];
     set priority(value: number);
+    get engines(): readonly Engine[];
     onAttach(engine: Engine): void;
     onDetach(engine: Engine): void;
     abstract update(engine: Engine, delta: number): void;

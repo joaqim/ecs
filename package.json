@@ -1,8 +1,8 @@
 {
-  "name": "@nova-engine/ecs",
+  "name": "@joaqim/ecs",
   "description": "An Entity-Component-System part of the Nova MMO Engine.",
   "private": false,
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "index.js",
   "author": {
     "name": "Ramiro Rojo",
@@ -17,7 +17,7 @@
     "test": "jest --maxWorkers=3",
     "test:watch": "jest --watch --maxWorkers=3",
     "test:ci": "jest --runInBand",
-    "build": "./node_modules/.bin/tsc",
+    "build": "tsc",
     "docs": "typedoc ./src --out ./docs; touch docs/.nojekyll",
     "prepare": "husky install"
   },
@@ -35,13 +35,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nova-engine/ecs.git"
+    "url": "git+https://github.com/joaqim/ecs.git"
   },
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/nova-engine/ecs/issues"
+    "url": "https://github.com/joaqim/ecs/issues"
   },
-  "homepage": "https://github.com/nova-engine/ecs#readme",
+  "homepage": "https://github.com/joaqim/ecs#readme",
   "keywords": [
     "ecs",
     "nova-engine"
