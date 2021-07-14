@@ -28,6 +28,7 @@ export declare function Model(name: string): (constructor: Constructor) => void;
 export declare function Primed(factory: Factory, propertyOptions?: PropertyOptions): (instance: any, propertyKey: string | symbol) => void;
 export declare class Base<T, U = undefined> {
     constructor(payload?: BaseConstructorPayload<T, U>);
+    static readonly tag: string;
     private init;
     private makeEnumerableGetters;
     clone(): T;
