@@ -1,43 +1,18 @@
 import { Base, BaseConstructorPayload, Model, Primed } from "./Reflect";
-import { ComponentClass, Component } from "./Component";
+import {
+  ComponentClass,
+  Component,
+  Components,
+  PrimedComponents,
+} from "./Component";
 
-interface EntityChangeListener {
+export interface EntityChangeListener {
   onEntityChanged(entity: Entity): void;
 }
 
-type Components = {
-  [tag: string]: Component;
-  classes: { [tag: string]: ComponentClass<Component> };
-};
-
-const PrimedComponents = (components?: Components) => {
-  if (components === undefined) return { classes: {} };
-
-  for (const tag in components) {
-    if (tag === "classes") continue;
-    if (Object.prototype.hasOwnProperty.call(components, tag)) {
-      const componentClass = components.classes[tag];
-      if (componentClass !== undefined) {
-        const newComponent = new componentClass(components[tag]);
-        //TODO: Is this check needed?
-        if (!Entity.cast(newComponent, componentClass)) {
-          throw new Error(``);
-        }
-        components[tag] = newComponent;
-      } else {
-        throw new Error(
-          `Missing "${tag}" in classes: {} in declaration of Entity`
-        );
-      }
-      /*TODO:
-      for (let listener of this._listeners) {
-        listener(this);
-      }
-      */
-    }
-  }
-
-  return components;
+export const PrimedEntities = (entities: Entity[]): Entity[] => {
+  if (entities == undefined) return [];
+  return entities;
 };
 
 /**
@@ -51,7 +26,7 @@ const PrimedComponents = (components?: Components) => {
  * This set can be used to persist the entity on a database.
  */
 @Model("Entity")
-class Entity extends Base<Entity> {
+export class Entity extends Base<Entity> {
   private _id: string | number | null = null;
   private readonly _listeners: EntityChangeListener[] = [];
 
@@ -280,5 +255,3 @@ class Entity extends Base<Entity> {
     return this;
   }
 }
-
-export { Entity, EntityChangeListener };

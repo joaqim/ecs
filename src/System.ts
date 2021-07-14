@@ -1,5 +1,10 @@
 import { Engine } from "./Engine";
 
+export const PrimedSystems = (systems: System[]): System[] => {
+  if (systems === undefined) return [];
+  return systems;
+};
+
 abstract class System {
   private _priority: number;
   private readonly _engines: Engine[];

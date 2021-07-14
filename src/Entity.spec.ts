@@ -1,5 +1,4 @@
-import { Base, Model } from "Reflect";
-
+import { Base, Model } from "./Reflect";
 import { Entity } from "./Entity";
 
 @Model
@@ -50,6 +49,7 @@ describe("Entities work", function () {
   });
   it("Can create Entity from JSON structure", () => {
     const entity = new Entity({
+      id: "entity",
       components: {
         MyComponent: <MyComponent>{
           val1: "Value1",
@@ -62,6 +62,7 @@ describe("Entities work", function () {
     expect(entity.getComponent(MyComponent)).toBeDefined();
     expect(entity.getComponent(MyComponent).val1).toBe("Value1");
     expect(entity.getComponent(MyComponent).val2).toBe("Value2");
+    expect(entity.id).toBe("entity");
   });
   it("Component tag is correct.", () => {
     expect(MyComponent.tag).toBe("MyComponent");
