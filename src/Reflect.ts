@@ -47,9 +47,11 @@ export function Model<T extends Constructor>(constructorOrName: string | T) {
   if (typeof constructorOrName === "string") {
     return (constructor: T) => {
       const _class = class extends constructor {
+        public static readonly tag = constructorOrName;
         constructor(...args: any[]) {
           super();
           this.init(args[0], args[1]);
+          //this.tag = constructorOrName;
         }
       };
 
@@ -64,6 +66,8 @@ export function Model<T extends Constructor>(constructorOrName: string | T) {
     };
   } else {
     const _class = class extends constructorOrName {
+      public static readonly tag: string = (constructorOrName as Constructor)
+        .name;
       constructor(...args: any[]) {
         super();
         this.init(args[0], args[1]);
@@ -102,6 +106,8 @@ export class Base<T, U = undefined> {
   // Method purely for typing purposes
   constructor(payload?: BaseConstructorPayload<T, U>) {}
 
+  public static readonly tag: string;
+
   private init(
     payload: Indexable = {},
     trace: Set<Constructor | string> = new Set()
@@ -129,7 +135,7 @@ export class Base<T, U = undefined> {
 
     for (const key in primedProperties) {
       let { factory, options } = primedProperties[key];
-      const classNameMappingMedatada: ClassNameMapping = Reflect.getMetadata(
+      const classNameMappingMetadata: ClassNameMapping = Reflect.getMetadata(
         CLASS_NAME_MAPPING,
         Base.constructor
       );
@@ -140,7 +146,7 @@ export class Base<T, U = undefined> {
         const factoryName = factoryIsString
           ? factory
           : Reflect.getMetadata(CLASS_NAME, factory);
-        factory = classNameMappingMedatada[factoryName];
+        factory = classNameMappingMetadata[factoryName];
         if (!factory) {
           throw Error(`Class ${factoryName} was never added`);
         }

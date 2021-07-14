@@ -1,18 +1,16 @@
 import { Base, Model } from "Reflect";
-import { Component } from "./Component";
 
 import { Entity } from "./Entity";
 
 @Model
 class MyComponent extends Base<MyComponent> {
-  static readonly tag = "MyComponent";
-
   val1 = "";
   val2 = "";
 }
 
-class MyBadTagComponent implements Component {
-  static readonly tag = "MyComponent";
+namespace BadTag {
+  @Model
+  export class MyComponent extends Base<MyComponent> {}
 }
 
 describe("Entities work", function () {
@@ -38,6 +36,11 @@ describe("Entities work", function () {
     expect(entity.putComponent(MyComponent)).toBeInstanceOf(MyComponent);
     expect(() => entity.hasComponent(MyComponent)).not.toThrow();
   });
+  it("Can only add one unique component class.", function () {
+    const entity = new Entity();
+    expect(entity.putComponent(MyComponent)).toBeInstanceOf(MyComponent);
+    //expect(() => entity.putComponent(MyComponent)).toThrow(); TODO
+  });
   it("Can add a component with multiple arguments.", function () {
     const entity = new Entity();
     entity.putComponent(MyComponent, { val1: "Value1", val2: "Value2" });
@@ -60,10 +63,18 @@ describe("Entities work", function () {
     expect(entity.getComponent(MyComponent).val1).toBe("Value1");
     expect(entity.getComponent(MyComponent).val2).toBe("Value2");
   });
+  it("Component tag is correct.", () => {
+    expect(MyComponent.tag).toBe("MyComponent");
+    const entity = new Entity();
+    expect(entity.putComponent(MyComponent)).toBeInstanceOf(MyComponent);
+    expect(MyComponent.tag).toBe("MyComponent");
+    expect(() => entity.getComponent(MyComponent)).not.toThrow();
+    //expect(() => entity.putComponent(MyComponent)).toThrow(); TODO
+  });
   it("Throw error when bad class tags override component types.", function () {
     const entity = new Entity();
     expect(entity.putComponent(MyComponent)).toBeInstanceOf(MyComponent);
-    expect(() => entity.putComponent(MyBadTagComponent)).toThrow();
+    expect(() => entity.putComponent(BadTag.MyComponent)).toThrow();
   });
   it("Remove a component.", function () {
     const entity = new Entity();
@@ -73,7 +84,7 @@ describe("Entities work", function () {
   it("Throw an error when a bad class tag tries to remove a component.", function () {
     const entity = new Entity();
     expect(entity.putComponent(MyComponent)).toBeInstanceOf(MyComponent);
-    expect(() => entity.removeComponent(MyBadTagComponent)).toThrow();
+    expect(() => entity.removeComponent(BadTag.MyComponent)).toThrow();
   });
   it("Throw an error when getting a non added component", function () {
     const entity = new Entity();

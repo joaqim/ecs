@@ -1,7 +1,5 @@
-import { Base, BaseConstructorPayload, Model, Primed } from "Reflect";
+import { Base, BaseConstructorPayload, Model, Primed } from "./Reflect";
 import { ComponentClass, Component } from "./Component";
-
-// type EntityChangeListener = (entity: Entity) => any;
 
 interface EntityChangeListener {
   onEntityChanged(entity: Entity): void;
@@ -21,10 +19,9 @@ const PrimedComponents = (components?: Components) => {
       const componentClass = components.classes[tag];
       if (componentClass !== undefined) {
         const newComponent = new componentClass(components[tag]);
+        //TODO: Is this check needed?
         if (!Entity.cast(newComponent, componentClass)) {
-          throw new Error(
-            `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
-          );
+          throw new Error(``);
         }
         components[tag] = newComponent;
       } else {
@@ -202,6 +199,9 @@ class Entity extends Base<Entity> {
     const tag = componentClass.tag || componentClass.name;
     const component = this.components[tag];
     if (component) {
+      if (tag == "_class" || tag == "Entity") {
+        throw new Error(`Component "${tag}" is not a valid component.`); //TODO: Make this check in Base/Model constructor in Reflect.ts
+      }
       if (!Entity.cast(component, componentClass)) {
         throw new Error(
           `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
@@ -249,7 +249,7 @@ class Entity extends Base<Entity> {
    * @param component The component to check
    * @param componentClass The class to cast into
    */
-  public static cast<T extends Component>(
+  static cast<T extends Component>(
     component: Component | undefined | null,
     componentClass: ComponentClass<T>
   ): component is T {

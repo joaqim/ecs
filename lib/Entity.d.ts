@@ -1,4 +1,4 @@
-import { Base, BaseConstructorPayload } from "Reflect";
+import { Base, BaseConstructorPayload } from "./Reflect";
 import { ComponentClass, Component } from "./Component";
 interface EntityChangeListener {
     onEntityChanged(entity: Entity): void;
