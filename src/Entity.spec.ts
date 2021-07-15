@@ -15,7 +15,7 @@ namespace BadTag {
 describe("Entities work", function () {
   it("Can only set id once", function () {
     const entity = new Entity();
-    expect(() => entity.id).toThrow();
+    expect(entity.id).toBeNull();
     expect(() => {
       entity.id = "testing id";
     }).not.toThrow();
@@ -25,7 +25,7 @@ describe("Entities work", function () {
   });
   it("Can retrieve id when set for the first time", function () {
     const entity = new Entity();
-    expect(() => entity.id).toThrow();
+    expect(entity.id).toBeNull();
     expect(() => (entity.id = "testing id")).not.toThrow();
     expect(() => entity.id).not.toThrow();
     expect(entity.id).toEqual("testing id");
@@ -47,7 +47,7 @@ describe("Entities work", function () {
     expect(entity.getComponent(MyComponent).val1).toBe("Value1");
     expect(entity.getComponent(MyComponent).val2).toBe("Value2");
   });
-  it("Can create Entity from JSON structure", () => {
+  it("Can create Entity with reflection", () => {
     const entity = new Entity({
       id: "entity",
       components: {
@@ -64,13 +64,20 @@ describe("Entities work", function () {
     expect(entity.getComponent(MyComponent).val2).toBe("Value2");
     expect(entity.id).toBe("entity");
   });
+  it("ID is either null, custom string or generated UUID", () => {
+    expect(new Entity().id).toBeNull();
+    expect(new Entity({}).id).toBeNull();
+    expect(new Entity({ id: "" }).id).not.toBeNull();
+    expect(new Entity({ id: "" }).id.length).toBe(36);
+    expect(new Entity({ id: "uuid" }).id.length).toBe(36);
+  });
   it("Component tag is correct.", () => {
     expect(MyComponent.tag).toBe("MyComponent");
     const entity = new Entity();
     expect(entity.putComponent(MyComponent)).toBeInstanceOf(MyComponent);
     expect(MyComponent.tag).toBe("MyComponent");
     expect(() => entity.getComponent(MyComponent)).not.toThrow();
-    //expect(() => entity.putComponent(MyComponent)).toThrow(); TODO
+    expect(() => entity.putComponent(MyComponent)).toThrow();
   });
   it("Throw error when bad class tags override component types.", function () {
     const entity = new Entity();

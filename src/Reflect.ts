@@ -208,6 +208,7 @@ export class Base<T, U = undefined> {
       for (let name of Object.getOwnPropertyNames(o)) {
         const desc = Object.getOwnPropertyDescriptor(o, name) || {};
         const hasGetter = typeof desc.get === "function";
+        //if (hasGetter && name != "id" && name != "_id") {
         if (hasGetter) {
           desc.enumerable = true;
           Object.defineProperty(instance, name, desc);

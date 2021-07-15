@@ -5,6 +5,7 @@ import {
   Components,
   PrimedComponents,
 } from "./Component";
+import { v4 as uuidv4 } from "uuid";
 
 export interface EntityChangeListener {
   onEntityChanged(entity: Entity): void;
@@ -13,6 +14,11 @@ export interface EntityChangeListener {
 export const PrimedEntities = (entities: Entity[]): Entity[] => {
   if (entities == undefined) return [];
   return entities;
+};
+
+export const PrimedId = (id?: string): string | undefined => {
+  if (id == "" || id?.toUpperCase() == "UUID") return uuidv4().toString();
+  if (id !== undefined && id !== null) return id;
 };
 
 /**
@@ -27,7 +33,7 @@ export const PrimedEntities = (entities: Entity[]): Entity[] => {
  */
 @Model("Entity")
 export class Entity extends Base<Entity> {
-  private _id: string | number | null = null;
+  private _id!: string;
   private readonly _listeners: EntityChangeListener[] = [];
 
   @Primed(PrimedComponents)
@@ -35,12 +41,8 @@ export class Entity extends Base<Entity> {
 
   /**
    * Gets the id of the entity.
-   * @throws when the id is null.
    */
-  get id(): string | number {
-    if (this._id === null) {
-      throw new Error("Cannot retrieve an ID when is null.");
-    }
+  get id(): string {
     return this._id;
   }
 
@@ -48,11 +50,9 @@ export class Entity extends Base<Entity> {
    * Sets the id of the entity to a new value.
    * @throws when the new value is null or undefined or the id is already set.
    */
-  set id(value: string | number) {
-    if (value === null || value === undefined) {
-      throw new Error(`Must set a non null value when setting an entity id.`);
-    }
-    if (this._id !== null) {
+  @Primed(PrimedId, { required: false })
+  set id(value: string) {
+    if (this._id !== null && this._id !== undefined) {
       throw new Error(`Entity id is already set as "${this._id}".`);
     }
     this._id = value;
@@ -175,8 +175,14 @@ export class Entity extends Base<Entity> {
     const component = this.components[tag];
     if (component) {
       if (tag == "_class" || tag == "Entity") {
-        throw new Error(`Component "${tag}" is not a valid component.`); //TODO: Make this check in Base/Model constructor in Reflect.ts
+        //TODO: Make this check in Base/Model constructor in Reflect.ts?
+        throw new Error(`Component "${tag}" is not a valid component.`);
       }
+
+      if (component instanceof componentClass) {
+        throw new Error(`Component "${tag}" is already defined in Entity`);
+      }
+
       if (!Entity.cast(component, componentClass)) {
         throw new Error(
           `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`

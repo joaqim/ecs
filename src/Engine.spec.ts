@@ -9,11 +9,9 @@ class MockSystem extends System {
 describe("Engine >>>", () => {
   let engine: Engine;
   it("Can be constructed with payload", () => {
-    /*
     engine = new Engine({
       entities: [new Entity()],
       systems: [new MockSystem()],
     });
-    */
   });
 });

@@ -15,11 +15,12 @@
     "paths": { "src/*": ["src/*"] },
     "sourceMap": true,
     "declaration": true,
+    "allowJs": true,
     "lib": ["DOM", "ESNext", "ESNext.Promise"],
     "types": ["jest", "reflect-metadata"]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*.spec.ts", "**/*.spec.ts"],
+  "exclude": ["node_modules"],
   "typedocOptions": {
     "out": "docs",
     "entryPoints": "src/index.ts",
