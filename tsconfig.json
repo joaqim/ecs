@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "commonjs",
+    "module": "CommonJS",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "noImplicitAny": true,
@@ -10,6 +10,8 @@
     "preserveConstEnums": true,
     "experimentalDecorators": true,
     "skipLibCheck": true,
+    "importHelpers": true,
+     "allowSyntheticDefaultImports": true,
     "outDir": "lib",
     "baseUrl": "src",
     "paths": { "src/*": ["src/*"] },
