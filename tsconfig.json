@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es6",
-    "module": "esnext",
+    "target": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,
     "noImplicitAny": true,
@@ -16,7 +16,7 @@
     "sourceMap": true,
     "declaration": true,
     "allowJs": true,
-    "lib": ["DOM", "ESNext", "ESNext.Promise"],
+    "lib": ["DOM", "ESNext"],
     "types": ["jest", "reflect-metadata"]
   },
   "include": ["src/**/*"],

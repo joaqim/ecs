@@ -4,13 +4,13 @@ export interface EntityChangeListener {
     onEntityChanged(entity: Entity): void;
 }
 export declare const PrimedEntities: (entities: Entity[]) => Entity[];
-export declare const PrimedId: (id: number | string) => string | number;
+export declare const PrimedId: (id?: string | undefined) => string | undefined;
 export declare class Entity extends Base<Entity> {
     private _id;
     private readonly _listeners;
     readonly components: Components;
-    get id(): string | number;
-    set id(value: string | number);
+    get id(): string;
+    set id(value: string);
     isNew(): boolean;
     map(fnc: (key: string) => Component | {
         component: Component;
