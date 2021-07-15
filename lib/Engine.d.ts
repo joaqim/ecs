@@ -1,15 +1,16 @@
+import { Base } from "./Reflect";
 import { Entity } from "./Entity";
 import { System } from "./System";
-interface EngineEntityListener {
+export interface EngineEntityListener {
     onEntityAdded(entity: Entity): void;
     onEntityRemoved(entity: Entity): void;
 }
-declare class Engine {
-    private _entities;
-    private readonly _entityListeners;
-    private readonly _systems;
+export declare class Engine extends Base<Engine> {
+    entities: Entity[];
+    entityListeners: EngineEntityListener[];
+    systems: System[];
     private _systemsNeedSorting;
-    get entities(): readonly Entity[];
+    get listEntities(): readonly Entity[];
     notifyPriorityChange(system: System): void;
     addEntityListener(listener: EngineEntityListener): Engine;
     removeEntityListener(listener: EngineEntityListener): Engine;
@@ -23,4 +24,3 @@ declare class Engine {
     removeSystems(...systems: System[]): Engine;
     update(delta: number): void;
 }
-export { Engine, EngineEntityListener };

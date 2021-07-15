@@ -1,15 +1,11 @@
 import { Base, BaseConstructorPayload } from "./Reflect";
-import { ComponentClass, Component } from "./Component";
-interface EntityChangeListener {
+import { ComponentClass, Component, Components } from "./Component";
+export interface EntityChangeListener {
     onEntityChanged(entity: Entity): void;
 }
-declare type Components = {
-    [tag: string]: Component;
-    classes: {
-        [tag: string]: ComponentClass<Component>;
-    };
-};
-declare class Entity extends Base<Entity> {
+export declare const PrimedEntities: (entities: Entity[]) => Entity[];
+export declare const PrimedId: (id: number | string) => string | number;
+export declare class Entity extends Base<Entity> {
     private _id;
     private readonly _listeners;
     readonly components: Components;
@@ -37,4 +33,3 @@ declare class Entity extends Base<Entity> {
     addListener(listener: EntityChangeListener): Entity;
     removeListener(listener: EntityChangeListener): Entity;
 }
-export { Entity, EntityChangeListener };

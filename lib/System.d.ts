@@ -1,4 +1,5 @@
 import { Engine } from "./Engine";
+export declare const PrimedSystems: (systems: System[]) => System[];
 declare abstract class System {
     private _priority;
     private readonly _engines;
