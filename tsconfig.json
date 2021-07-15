@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "target": "ESNext",
     "module": "CommonJS",
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -12,17 +12,16 @@
     "skipLibCheck": true,
     "importHelpers": true,
      "allowSyntheticDefaultImports": true,
+    "declaration": true,
     "outDir": "lib",
     "baseUrl": "src",
     "paths": { "src/*": ["src/*"] },
-    "sourceMap": true,
-    "declaration": true,
     "allowJs": true,
     "lib": ["DOM", "ESNext"],
     "types": ["jest", "reflect-metadata"]
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "lib", "docs"],
   "typedocOptions": {
     "out": "docs",
     "entryPoints": "src/index.ts",
