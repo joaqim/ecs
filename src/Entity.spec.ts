@@ -47,6 +47,18 @@ describe("Entities work", function () {
     expect(entity.getComponent(MyComponent).val1).toBe("Value1");
     expect(entity.getComponent(MyComponent).val2).toBe("Value2");
   });
+  it("Can create Entity with reflection newer", () => {
+    const entity = new Entity({
+      components: {
+        MyComponent: { val1: "VAL1", val2: "VAL2" },
+        classes: { MyComponent },
+      },
+    });
+    expect(entity.components.MyComponent).toBeDefined();
+    let myComponent = entity.components.MyComponent as MyComponent;
+    expect(myComponent.val1).toBe("VAL1");
+    expect(entity.getComponent(MyComponent).val2).toBe("VAL2");
+  });
   it("Can create Entity with reflection", () => {
     const entity = new Entity({
       id: "entity",
@@ -64,6 +76,32 @@ describe("Entities work", function () {
     expect(entity.getComponent(MyComponent).val2).toBe("Value2");
     expect(entity.id).toBe("entity");
   });
+  it("Can create Entity with aliased components", () => {
+    const entity = new Entity({
+      id: "entity",
+      components: {
+        MyComponent: <MyComponent>{
+          val1: "Value1",
+          val2: "Value2",
+        },
+        myComponent: <MyComponent>{ val1: "VAL1", val2: "VAL2" },
+        classes: { MyComponent, myComponent: MyComponent },
+      },
+    });
+
+    expect(entity.getComponent(MyComponent)).toBeDefined();
+    expect(entity.getComponent(MyComponent).val1).toBe("Value1");
+    expect(entity.getComponent(MyComponent).val2).toBe("Value2");
+
+    expect(entity.components.myComponent).toBeDefined();
+    expect((entity.components.myComponent as MyComponent).val1).toBe("VAL1");
+    expect((entity.getComponentByTag("myComponent") as MyComponent).val2).toBe(
+      "VAL2"
+    );
+
+    expect(entity.id).toBe("entity");
+  });
+
   it("ID is either null, custom string or generated UUID", () => {
     expect(new Entity().id).toBeNull();
     expect(new Entity({}).id).toBeNull();

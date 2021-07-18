@@ -15,7 +15,6 @@ export const PrimedId = (id?: string): string | undefined => {
   if (id == "" || id?.toUpperCase() == "UUID") return uuidv4().toString();
   if (id !== undefined && id !== null) return id;
 };
-
 const PrimedComponentMap = (components?: ComponentMap): ComponentMap => {
   if (components === undefined) return { classes: {} };
 
@@ -45,6 +44,7 @@ const PrimedComponentMap = (components?: ComponentMap): ComponentMap => {
 
   return components;
 };
+
 /**
  * An Entity is every object you may have on your system.
  * A character, a weapon, an skill, a map.
@@ -56,11 +56,13 @@ const PrimedComponentMap = (components?: ComponentMap): ComponentMap => {
  * This set can be used to persist the entity on a database.
  */
 @Model("Entity")
-export class Entity extends Base<Entity> {
+export class Entity extends Base<Entity> implements ComponentMap {
+  [tag: string]: Component;
+  classes: { [tag: string]: ComponentClass<Component, undefined> };
+
   private _id!: string;
   private readonly _listeners: EntityChangeListener[] = [];
 
-  //@Primed(PrimedComponentMap)
   public _componentMap!: ComponentMap;
 
   /**
@@ -82,27 +84,30 @@ export class Entity extends Base<Entity> {
     this._id = value;
   }
 
-  @Primed(PrimedComponentMap)
   get components(): ComponentMap {
     return this._componentMap;
   }
-
+  @Primed(PrimedComponentMap)
   set components(componentMap: ComponentMap) {
     this._componentMap = componentMap;
   }
 
-  get comps(): ComponentMap {
-    return this._componentMap;
+  /**
+   * Checks if the entity is newly created.
+   * An entity is considered new when the id is null.
+   */
+  isNew(): boolean {
+    return this._id === null;
   }
 
   map(
-    fn: (
+    fnc: (
       key: string
     ) => Component | { component: Component; type: ComponentClass<Component> }
   ): Component[] {
     return Object.keys(this.components)
       .filter((key) => key !== "classes")
-      .map((i) => fn(i));
+      .map((i) => fnc(i));
   }
 
   /**
@@ -179,21 +184,6 @@ export class Entity extends Base<Entity> {
   getComponent<T extends Component>(componentClass: ComponentClass<T>): T {
     const tag = componentClass.tag || componentClass.name;
     const component = this.components[tag];
-    if (!component) {
-      throw new Error(`Cannot get component "${tag}" from entity.`);
-    }
-    if (!Entity.cast(component, componentClass)) {
-      throw new Error(
-        `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
-      );
-    }
-    return component;
-  }
-
-  getComponentByTag(tag: string): Component {
-    //const tag = //componentClass.tag || componentClass.name;
-    const component = this.components[tag];
-    const componentClass = this.components.classes[tag];
     if (!component) {
       throw new Error(`Cannot get component "${tag}" from entity.`);
     }

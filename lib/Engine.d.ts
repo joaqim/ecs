@@ -1,17 +1,25 @@
-import { Base } from "./Reflect";
+import { Base, BaseConstructorPayload } from "./Reflect";
 import { Entity } from "./Entity";
 import { System } from "./System";
 export interface EngineEntityListener {
     onEntityAdded(entity: Entity): void;
     onEntityRemoved(entity: Entity): void;
 }
-export declare class Engine extends Base<Engine> {
+export declare type EntityMap = {
     entities: Entity[];
-    entityListeners: EngineEntityListener[];
+    listeners: EngineEntityListener[];
+};
+export declare const PrimedEntityMap: (entityMap: EntityMap) => EntityMap;
+export declare class Engine extends Base<Engine> {
+    entityMap: EntityMap;
     systems: System[];
     private _systemsNeedSorting;
     get listEntities(): readonly Entity[];
     notifyPriorityChange(system: System): void;
+    constructor(payload?: BaseConstructorPayload<Engine, undefined>);
+    awake(): Engine;
+    get entities(): Entity[];
+    set entities(entities: Entity[]);
     addEntityListener(listener: EngineEntityListener): Engine;
     removeEntityListener(listener: EngineEntityListener): Engine;
     addEntity(entity: Entity): Engine;

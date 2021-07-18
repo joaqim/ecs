@@ -135,6 +135,11 @@ export class Base<T, U = undefined> {
 
     for (const key in primedProperties) {
       let { factory, options } = primedProperties[key];
+      if (factory === undefined) {
+        console.log(key);
+        console.log("Factory is undefined");
+        continue;
+      }
       const classNameMappingMetadata: ClassNameMapping = Reflect.getMetadata(
         CLASS_NAME_MAPPING,
         Base.constructor

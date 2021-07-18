@@ -1,4 +1,4 @@
-import { Base, Model, Primed } from "./Reflect";
+import { Base, Model, Primed, BaseConstructorPayload } from "./Reflect";
 import { Entity } from "./Entity";
 import { System, PrimedSystems } from "./System";
 
@@ -6,6 +6,28 @@ export interface EngineEntityListener {
   onEntityAdded(entity: Entity): void;
   onEntityRemoved(entity: Entity): void;
 }
+
+export type EntityMap = {
+  /** Public array containing the current list of added entities. */
+  entities: Entity[];
+  /** Public list of entity listeners */
+  listeners: EngineEntityListener[];
+};
+
+export const PrimedEntityMap = (entityMap: EntityMap): EntityMap => {
+  if (entityMap?.entities !== null && entityMap?.entities !== undefined) {
+    if (entityMap !== null && entityMap.listeners !== undefined) {
+      for (const listener of entityMap.listeners) {
+        for (const entity of entityMap.entities) {
+          listener.onEntityAdded(entity);
+        }
+      }
+      return entityMap;
+    }
+    return <EntityMap>{ entities: entityMap.entities, listeners: [] };
+  }
+  return <EntityMap>{ entities: [], listeners: [] };
+};
 
 /**
  * An engine is the class than combines systems and entities.
@@ -16,21 +38,26 @@ export interface EngineEntityListener {
 @Model
 export class Engine extends Base<Engine> {
   /** Public array containing the current list of added entities. */
-  @Primed(Entity, { array: true })
-  public entities!: Entity[];
+  //@Primed(Entity, { array: true })
+  //public _entities!: Entity[];
   /** Public list of entity listeners */
-  public entityListeners: EngineEntityListener[] = [];
+  //public _entityListeners: EngineEntityListener[] = [];
+
+  @Primed(PrimedEntityMap)
+  public entityMap: EntityMap;
+
   /** Public list of added systems. */
   @Primed(PrimedSystems, { array: true })
   public systems!: System[];
   /** Checks if the system needs sorting of some sort */
-  private _systemsNeedSorting = false;
+  private _systemsNeedSorting = true;
   /**
    * Computes an immutable list of entities added to the engine.
    */
   get listEntities(): readonly Entity[] {
     return Object.freeze(this.entities.slice(0));
   }
+
   /**
    * Alerts the engine to sort systems by priority.
    * @param system The system than changed priority
@@ -40,13 +67,32 @@ export class Engine extends Base<Engine> {
     this._systemsNeedSorting = true;
   }
 
+  constructor(payload?: BaseConstructorPayload<Engine, undefined>) {
+    super(payload);
+  }
+
+  awake(): Engine {
+    for (const system of this.systems) {
+      system.onAttach(this);
+    }
+    return this;
+  }
+
+  get entities(): Entity[] {
+    return this.entityMap.entities;
+  }
+
+  set entities(entities: Entity[]) {
+    this.entityMap.entities = entities;
+  }
+
   /**
    * Adds a listener for when entities are added or removed.
    * @param listener The listener waiting to add
    */
   addEntityListener(listener: EngineEntityListener): Engine {
-    if (this.entityListeners.indexOf(listener) === -1) {
-      this.entityListeners.push(listener);
+    if (this.entityMap.listeners.indexOf(listener) === -1) {
+      this.entityMap.listeners.push(listener);
     }
     return this;
   }
@@ -56,9 +102,9 @@ export class Engine extends Base<Engine> {
    * @param listener The listener to remove
    */
   removeEntityListener(listener: EngineEntityListener): Engine {
-    const index = this.entityListeners.indexOf(listener);
+    const index = this.entityMap.listeners.indexOf(listener);
     if (index !== -1) {
-      this.entityListeners.splice(index, 1);
+      this.entityMap.listeners.splice(index, 1);
     }
     return this;
   }
@@ -71,7 +117,7 @@ export class Engine extends Base<Engine> {
   addEntity(entity: Entity): Engine {
     if (this.entities.indexOf(entity) === -1) {
       this.entities.push(entity);
-      for (const listener of this.entityListeners) {
+      for (const listener of this.entityMap.listeners) {
         listener.onEntityAdded(entity);
       }
     }
@@ -99,7 +145,7 @@ export class Engine extends Base<Engine> {
     const index = this.entities.indexOf(entity);
     if (index !== -1) {
       this.entities.splice(index, 1);
-      for (const listener of this.entityListeners) {
+      for (const listener of this.entityMap.listeners) {
         listener.onEntityRemoved(entity);
       }
     }

@@ -23,13 +23,13 @@ describe("Systems works", function () {
     expect(new MySystem()).toBeInstanceOf(System);
     expect(new MySystem()).toBeInstanceOf(MySystem);
   });
-  it("Attached systems should call the onAttach method", () => {
+  it("Should attach to engine", () => {
     const engine = new Engine();
     const system = new MySystem();
     engine.addSystem(system);
     expect(system.signature).not.toEqual(null);
   });
-  it("Detached systems should call the onDetach method", () => {
+  it("Should detach from engine", () => {
     const engine = new Engine();
     const system = new MySystem();
     engine.addSystem(system);
