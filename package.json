@@ -6,9 +6,15 @@
   "main": "index.js",
   "types": "index.d.ts",
   "author": {
-    "name": "Ramiro Rojo",
-    "email": "ramiro.rojo.cretta@gmail.com"
+    "name": "Joaqim Planstedt",
+    "email": "github@joaqim.xyz"
   },
+  "contributors": [
+    {
+      "name": "Ramiro Rojo",
+      "email": "ramiro.rojo.cretta@gmail.com"
+    }
+  ],
   "scripts": {
     "build-all": "npm run build && npm run docs && npm test",
     "precommit": "build-all",
@@ -46,7 +52,8 @@
   "homepage": "https://github.com/joaqim/ecs#readme",
   "keywords": [
     "ecs",
-    "nova-engine"
+    "reflection",
+    "WIP"
   ],
   "dependencies": {
     "reflect-metadata": "^0.1.13",
