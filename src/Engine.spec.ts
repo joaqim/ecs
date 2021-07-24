@@ -67,6 +67,7 @@ describe("Engine >>>", () => {
       },
       systems: [new MockSystem(), logSystem],
     });
+
     expect(spyListenerAdd).toHaveBeenCalledTimes(2);
 
     expect(spySystemAttach).toHaveBeenCalledTimes(0);
