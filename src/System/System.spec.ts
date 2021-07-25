@@ -1,21 +1,21 @@
-import { System } from "./System";
-import { Engine } from "./Engine";
-import { Signature, SignatureBuilder } from "./Signature";
+import { Engine, IEngine } from "Engine";
+import { ISignature, SignatureBuilder } from "Signature";
+import { System } from "System";
 
 class MySystem extends System {
-  public signature: Signature | null = null;
+  public signature: ISignature | null = null;
 
-  onAttach(engine: Engine) {
+  onAttach(engine: IEngine) {
     super.onAttach(engine);
     this.signature = new SignatureBuilder(engine).build();
   }
 
-  onDetach(engine: Engine) {
+  onDetach(engine: IEngine) {
     super.onDetach(engine);
     this.signature = null;
   }
 
-  update(_engine: Engine, _delta: number) {}
+  update(_engine: IEngine, _delta: number) {}
 }
 
 describe("Systems works", function () {

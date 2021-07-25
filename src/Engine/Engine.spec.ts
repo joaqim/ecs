@@ -1,34 +1,34 @@
-import { Signature, SignatureBuilder } from "Signature";
-import { Engine, EngineEntityListener } from "./Engine";
-import { Entity } from "./Entity";
-import { System } from "./System";
-import { Component } from "./Component";
+import { Engine, IEngine, IEngineEntityListener } from "Engine";
+import { Entity, IEntity } from "Entity";
 import { Base, Model } from "Reflect";
+import { ISignature, SignatureBuilder } from "Signature";
+import { System } from "System";
 
 class MockSystem extends System {
-  update(engine: Engine, delta: number): void {}
+  update(engine: IEngine, delta: number): void {}
 }
+
 @Model("LogComponent")
 class LogComponent extends Base<LogComponent> {}
 
-class LogEntityListener implements EngineEntityListener {
-  onEntityAdded(entity: Entity): void {
+class LogEntityListener implements IEngineEntityListener {
+  onEntityAdded(_entity: IEntity): void {
     //console.log("Entity added: " + entity.id);
   }
-  onEntityRemoved(entity: Entity): void {
+  onEntityRemoved(_entity: IEntity): void {
     //console.log("Entity removed: " + entity.id);
   }
 }
 
 class LogEntitySystem extends System {
-  signature: Signature;
-  onAttach(engine: Engine) {
+  signature: ISignature;
+  onAttach(engine: IEngine) {
     super.onAttach(engine);
     this.signature = new SignatureBuilder(engine).include(LogComponent).build();
   }
 
-  update(engine: Engine, delta: number): void {
-    for (let entity of this.signature.entities) {
+  update(engine: IEngine, delta: number): void {
+    for (let entity of this.signature.listEntities()) {
       //console.log("Entity updated: " + entity.id);
     }
   }

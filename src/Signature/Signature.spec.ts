@@ -1,18 +1,18 @@
-import { SignatureBuilder } from "./Signature";
-import { Engine } from "./Engine";
-import { Component } from "./Component";
-import { Entity } from "./Entity";
+import { SignatureBuilder } from "Signature";
+import { Engine } from "Engine";
+import { Entity } from "Entity";
+import { IComponent } from "Component.h";
 
-class MyComponent implements Component {}
+class MyComponent implements IComponent {}
 
-class MyOtherComponent implements Component {}
+class MyOtherComponent implements IComponent {}
 describe("Signatures work", function () {
   it("Empty signature returns all entities", function () {
     const engine = new Engine();
     engine.addEntities(new Entity(), new Entity());
     const builder = new SignatureBuilder(engine);
     const signature = builder.build();
-    expect(signature.entities.length).toEqual(engine.entities.length);
+    expect(signature.listEntities().length).toEqual(engine.entities.length);
   });
   it("Signatures must always have an Engine attached", function () {
     const builder = new SignatureBuilder();
@@ -27,9 +27,9 @@ describe("Signatures work", function () {
     const builder = new SignatureBuilder(engine);
     builder.include(MyComponent, MyOtherComponent);
     const signature = builder.build();
-    expect(signature.entities.indexOf(entity)).not.toEqual(-1);
-    expect(signature.entities.length).not.toEqual(engine.entities.length);
-    expect(signature.entities.length).not.toEqual(0);
+    expect(signature.listEntities().indexOf(entity)).not.toEqual(-1);
+    expect(signature.listEntities().length).not.toEqual(engine.entities.length);
+    expect(signature.listEntities().length).not.toEqual(0);
   });
   it("Signature includes the corresponding entity for exclusion", function () {
     const engine = new Engine();
@@ -39,8 +39,8 @@ describe("Signatures work", function () {
     const builder = new SignatureBuilder(engine);
     builder.exclude(MyComponent);
     const signature = builder.build();
-    expect(signature.entities.indexOf(entity)).toEqual(-1);
-    expect(signature.entities.length).not.toEqual(engine.entities.length);
-    expect(signature.entities.length).not.toEqual(0);
+    expect(signature.listEntities().indexOf(entity)).toEqual(-1);
+    expect(signature.listEntities().length).not.toEqual(engine.entities.length);
+    expect(signature.listEntities().length).not.toEqual(0);
   });
 });
