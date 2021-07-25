@@ -13,36 +13,39 @@ export const PrimedId = (id?: string): string | undefined => {
   return id;
 };
 
+/**
+ * Checks if the component is an instance of the class
+ * @param component The component to check
+ * @param ComponentCtor The class to cast into
+ */
+function componentCast<T extends IComponent>(
+  component: IComponent | undefined | null,
+  ComponentCtor: IComponentClass<T>
+): component is T {
+  return !!(component && component instanceof ComponentCtor);
+}
+
 const PrimedComponentMap = (components?: ComponentMap): ComponentMap => {
   if (components === undefined) return { classes: {} };
-  // eslint-disable-next-line no-restricted-syntax
-  for (const tag in components) {
-    // eslint-disable-next-line no-continue
-    if (tag === "classes") continue;
+
+  Object.keys(components).forEach((tag: string) => {
+    if (tag === "classes") return;
     if (Object.prototype.hasOwnProperty.call(components, tag)) {
-      const componentClass = components.classes[tag];
-      if (componentClass !== undefined) {
-        // eslint-disable-next-line new-cap
-        const newComponent = new componentClass(components[tag]);
-        // TODO: Is this check needed?
-        // eslint-disable-next-line @typescript-eslint/no-use-before-define
-        if (!Entity.cast(newComponent, componentClass)) {
-          throw new Error(``);
+      const ComponentCtor = components.classes[tag];
+      if (ComponentCtor !== undefined) {
+        const newComponent = new ComponentCtor(components[tag]);
+        if (!componentCast(newComponent, ComponentCtor)) {
+          throw new Error("TODO");
         }
         // eslint-disable-next-line no-param-reassign
         components[tag] = newComponent;
       } else {
         throw new Error(
-          `Missing "${tag}" in classes: {} in construction of ComponentMap`
+          `Missing "${tag}" in classes: {} of construction of ComponentMap`
         );
       }
-      /* TODO:
-      for (let listener of this._listeners) {
-        listener(this);
-      }
-      */
     }
-  }
+  });
 
   return components;
 };
@@ -163,7 +166,7 @@ export class Entity extends Base<Entity> implements IEntity {
     const tag = componentClass.tag || componentClass.name;
     const component = this.components[tag];
     if (!component) return false;
-    if (!Entity.cast(component, componentClass)) {
+    if (!componentCast(component, componentClass)) {
       throw new Error(
         `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
       );
@@ -185,7 +188,7 @@ export class Entity extends Base<Entity> implements IEntity {
     if (!component) {
       throw new Error(`Cannot get component "${tag}" from entity.`);
     }
-    if (!Entity.cast(component, componentClass)) {
+    if (!componentCast(component, componentClass)) {
       throw new Error(
         `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
       );
@@ -200,7 +203,7 @@ export class Entity extends Base<Entity> implements IEntity {
     if (!component) {
       throw new Error(`Cannot get component "${tag}" from entity.`);
     }
-    if (!Entity.cast(component, componentClass)) {
+    if (!componentCast(component, componentClass)) {
       throw new Error(
         `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
       );
@@ -230,7 +233,7 @@ export class Entity extends Base<Entity> implements IEntity {
         throw new Error(`Component "${tag}" is already defined in Entity`);
       }
 
-      if (!Entity.cast(component, ComponentCtor)) {
+      if (!componentCast(component, ComponentCtor)) {
         throw new Error(
           `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
         );
@@ -263,7 +266,7 @@ export class Entity extends Base<Entity> implements IEntity {
     if (!component) {
       throw new Error(`Component of tag "${tag}".\nDoes not exists.`);
     }
-    if (!Entity.cast(component, componentClass)) {
+    if (!componentCast(component, componentClass)) {
       throw new Error(
         `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
       );
@@ -272,18 +275,6 @@ export class Entity extends Base<Entity> implements IEntity {
     this.listeners.forEach((listener: IEntityChangeListener) =>
       listener.onEntityChanged(this)
     );
-  }
-
-  /**
-   * Checks if the component is an instance of the class
-   * @param component The component to check
-   * @param componentClass The class to cast into
-   */
-  static cast<T extends IComponent>(
-    component: IComponent | undefined | null,
-    componentClass: IComponentClass<T>
-  ): component is T {
-    return !!(component && component instanceof componentClass);
   }
 
   /**

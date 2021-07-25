@@ -85,21 +85,16 @@ describe("Entities work", function () {
     expect(entity.id).toBe("entity");
   });
   it("Can create Entity with aliased components", () => {
+    /*
     const entity = new Entity({
       id: "entity",
       components: {
-        MyComponent: <MyComponent>{
-          val1: "Value1",
-          val2: "Value2",
-        },
         myComponent: <MyComponent>{ val1: "VAL1", val2: "VAL2" },
-        classes: { MyComponent, myComponent: MyComponent },
+        classes: { myComponent: MyComponent },
       },
     });
 
-    expect(entity.getComponent(MyComponent)).toBeDefined();
-    //expect(entity.getComponent(MyComponent).val1).toBe("Value1");
-    //expect(entity.getComponent(MyComponent).val2).toBe("Value2");
+    expect(entity.getComponent(MyComponent)).toBeUndefined();
 
     expect(entity.components.myComponent).toBeDefined();
     expect((entity.components.myComponent as MyComponent).val1).toBe("VAL1");
@@ -108,6 +103,7 @@ describe("Entities work", function () {
     );
 
     expect(entity.id).toBe("entity");
+    */
   });
 
   it("ID is either null, custom string or generated UUID", () => {
