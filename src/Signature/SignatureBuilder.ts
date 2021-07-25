@@ -1,14 +1,14 @@
 import { IComponent, IComponentClass } from "Component.h";
 import { IEngine } from "Engine";
 import { ISignature } from "Signature";
-import CachedSignature from "./CachedSignature";
-import NonCachedSignature from "./NonCachedSignature";
+import { CachedSignature } from "./CachedSignature";
+import { NonCachedSignature } from "./NonCachedSignature";
 
 /**
  * Utility class to build Signatures.
  * It's the only way to create the implementations of CachedSignature and NonCachedSignature.
  */
-export default class SignatureBuilder {
+export class SignatureBuilder {
   private engine: IEngine | null;
 
   private cached: boolean;

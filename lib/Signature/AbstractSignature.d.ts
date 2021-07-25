@@ -2,7 +2,7 @@ import { IComponent, IComponentClass } from "Component.h";
 import { IEngine } from "Engine";
 import { IEntity } from "Entity";
 import { ISignature } from "Signature";
-export default abstract class AbstractSignature implements ISignature {
+export declare abstract class AbstractSignature implements ISignature {
     readonly engine: IEngine;
     private readonly included;
     private readonly excluded;

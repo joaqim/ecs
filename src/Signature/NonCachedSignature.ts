@@ -1,5 +1,5 @@
 import { IEntity } from "Entity";
-import AbstractSignature from "./AbstractSignature";
+import { AbstractSignature } from "./AbstractSignature";
 
 /**
  * A NonCacheSignature always computes the members of it.
@@ -7,7 +7,7 @@ import AbstractSignature from "./AbstractSignature";
  * You can use this instead.
  * @private
  */
-export default class NonCachedSignature extends AbstractSignature {
+export class NonCachedSignature extends AbstractSignature {
   entities: readonly IEntity[];
 
   listEntities(): ReadonlyArray<IEntity> {

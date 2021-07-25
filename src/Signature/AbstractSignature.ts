@@ -8,7 +8,7 @@ import { ISignature } from "Signature";
  * This class is private to this module.
  * @private
  */
-export default abstract class AbstractSignature implements ISignature {
+export abstract class AbstractSignature implements ISignature {
   readonly engine: IEngine;
 
   private readonly included: ReadonlyArray<IComponentClass<IComponent>>;

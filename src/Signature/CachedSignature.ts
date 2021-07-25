@@ -1,14 +1,14 @@
 import { IComponent, IComponentClass } from "Component.h";
 import { IEngine } from "Engine";
 import { IEntity, IEntityChangeListener } from "Entity";
-import AbstractSignature from "./AbstractSignature";
+import { AbstractSignature } from "./AbstractSignature";
 
 /**
  * A CachedSignature is a signature than caches it's results and alters it only
  * when an entity changes.
  *
  */
-export default class CachedSignature
+export class CachedSignature
   extends AbstractSignature
   implements IEntityChangeListener
 {

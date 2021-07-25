@@ -1,7 +1,7 @@
 import { IComponent, IComponentClass } from "Component.h";
 import { IEngine } from "Engine";
 import { ISignature } from "Signature";
-export default class SignatureBuilder {
+export declare class SignatureBuilder {
     private engine;
     private cached;
     private readonly included;
