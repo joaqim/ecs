@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Signature | @joaqim/ecs</title>
+	<title>Engine/Engine.h | @joaqim/ecs</title>
 	<meta name="description" content="Documentation for @joaqim/ecs">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../modules.html">@joaqim/ecs</a>
 				</li>
 				<li>
-					<a href="Signature.html">Signature</a>
+					<a href="Engine_Engine_h.html">Engine/Engine.h</a>
 				</li>
 			</ul>
-			<h1>Module Signature</h1>
+			<h1>Module Engine/Engine.h</h1>
 		</div>
 	</div>
 </header>
@@ -70,44 +70,53 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>References</h3>
+							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="Signature.html#AbstractSignature" class="tsd-kind-icon">Abstract<wbr>Signature</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="Signature.html#CachedSignature" class="tsd-kind-icon">Cached<wbr>Signature</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="Signature.html#ISignature" class="tsd-kind-icon">ISignature</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="Signature.html#NonCachedSignature" class="tsd-kind-icon">Non<wbr>Cached<wbr>Signature</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="Signature.html#SignatureBuilder" class="tsd-kind-icon">Signature<wbr>Builder</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/Engine_Engine_h.IEngine.html" class="tsd-kind-icon">IEngine</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/Engine_Engine_h.IEngineEntityListener.html" class="tsd-kind-icon">IEngine<wbr>Entity<wbr>Listener</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Type aliases</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="Engine_Engine_h.html#EntityMap" class="tsd-kind-icon">Entity<wbr>Map</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>References</h2>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="AbstractSignature" class="tsd-anchor"></a>
-					<h3>Abstract<wbr>Signature</h3>
-					Renames and exports <a href="../classes/Signature_AbstractSignature.default.html">default</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="CachedSignature" class="tsd-anchor"></a>
-					<h3>Cached<wbr>Signature</h3>
-					Renames and exports <a href="../classes/Signature_CachedSignature.default.html">default</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="ISignature" class="tsd-anchor"></a>
-					<h3>ISignature</h3>
-					Re-exports <a href="../interfaces/Signature_Signature_h.ISignature.html">ISignature</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="NonCachedSignature" class="tsd-anchor"></a>
-					<h3>Non<wbr>Cached<wbr>Signature</h3>
-					Renames and exports <a href="../classes/Signature_NonCachedSignature.default.html">default</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="SignatureBuilder" class="tsd-anchor"></a>
-					<h3>Signature<wbr>Builder</h3>
-					Renames and exports <a href="../classes/Signature_SignatureBuilder.default.html">default</a>
+				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+					<a name="EntityMap" class="tsd-anchor"></a>
+					<h3>Entity<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">Entity<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>entities<span class="tsd-signature-symbol">: </span><a href="../interfaces/Entity_Entity_h.IEntity.html" class="tsd-signature-type" data-tsd-kind="Interface">IEntity</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span>listeners<span class="tsd-signature-symbol">: </span><a href="../interfaces/Engine_Engine_h.IEngineEntityListener.html" class="tsd-signature-type" data-tsd-kind="Interface">IEngineEntityListener</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol"> }</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/joaqim/ecs/blob/53ee0c0/src/Engine/Engine.h.ts#L9">Engine/Engine.h.ts:9</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter">
+								<h5>entities<span class="tsd-signature-symbol">: </span><a href="../interfaces/Entity_Entity_h.IEntity.html" class="tsd-signature-type" data-tsd-kind="Interface">IEntity</a><span class="tsd-signature-symbol">[]</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Public array containing the current list of added entities.</p>
+									</div>
+								</div>
+							</li>
+							<li class="tsd-parameter">
+								<h5>listeners<span class="tsd-signature-symbol">: </span><a href="../interfaces/Engine_Engine_h.IEngineEntityListener.html" class="tsd-signature-type" data-tsd-kind="Interface">IEngineEntityListener</a><span class="tsd-signature-symbol">[]</span></h5>
+								<div class="tsd-comment tsd-typography">
+									<div class="lead">
+										<p>Public list of entity listeners</p>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -126,7 +135,7 @@
 					<li class=" tsd-kind-module">
 						<a href="Engine_Engine.html">Engine/<wbr>Engine</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="Engine_Engine_h.html">Engine/<wbr>Engine.h</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -141,7 +150,7 @@
 					<li class=" tsd-kind-module">
 						<a href="Reflect.html">Reflect</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="Signature.html">Signature</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -175,20 +184,14 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="Signature.html#AbstractSignature" class="tsd-kind-icon">Abstract<wbr>Signature</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/Engine_Engine_h.IEngine.html" class="tsd-kind-icon">IEngine</a>
 					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="Signature.html#CachedSignature" class="tsd-kind-icon">Cached<wbr>Signature</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/Engine_Engine_h.IEngineEntityListener.html" class="tsd-kind-icon">IEngine<wbr>Entity<wbr>Listener</a>
 					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="Signature.html#ISignature" class="tsd-kind-icon">ISignature</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="Signature.html#NonCachedSignature" class="tsd-kind-icon">Non<wbr>Cached<wbr>Signature</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="Signature.html#SignatureBuilder" class="tsd-kind-icon">Signature<wbr>Builder</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="Engine_Engine_h.html#EntityMap" class="tsd-kind-icon">Entity<wbr>Map</a>
 					</li>
 				</ul>
 			</nav>

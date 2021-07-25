@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Signature | @joaqim/ecs</title>
+	<title>Component.h | @joaqim/ecs</title>
 	<meta name="description" content="Documentation for @joaqim/ecs">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,10 +55,10 @@
 					<a href="../modules.html">@joaqim/ecs</a>
 				</li>
 				<li>
-					<a href="Signature.html">Signature</a>
+					<a href="Component_h.html">Component.h</a>
 				</li>
 			</ul>
-			<h1>Module Signature</h1>
+			<h1>Module Component.h</h1>
 		</div>
 	</div>
 </header>
@@ -70,44 +70,48 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>References</h3>
+							<h3>Interfaces</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="Signature.html#AbstractSignature" class="tsd-kind-icon">Abstract<wbr>Signature</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="Signature.html#CachedSignature" class="tsd-kind-icon">Cached<wbr>Signature</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="Signature.html#ISignature" class="tsd-kind-icon">ISignature</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="Signature.html#NonCachedSignature" class="tsd-kind-icon">Non<wbr>Cached<wbr>Signature</a></li>
-								<li class="tsd-kind-reference tsd-parent-kind-module"><a href="Signature.html#SignatureBuilder" class="tsd-kind-icon">Signature<wbr>Builder</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module"><a href="../interfaces/Component_h.IComponent.html" class="tsd-kind-icon">IComponent</a></li>
+								<li class="tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter"><a href="../interfaces/Component_h.IComponentClass.html" class="tsd-kind-icon">IComponent<wbr>Class</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Type aliases</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="Component_h.html#ComponentMap" class="tsd-kind-icon">Component<wbr>Map</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>References</h2>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="AbstractSignature" class="tsd-anchor"></a>
-					<h3>Abstract<wbr>Signature</h3>
-					Renames and exports <a href="../classes/Signature_AbstractSignature.default.html">default</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="CachedSignature" class="tsd-anchor"></a>
-					<h3>Cached<wbr>Signature</h3>
-					Renames and exports <a href="../classes/Signature_CachedSignature.default.html">default</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="ISignature" class="tsd-anchor"></a>
-					<h3>ISignature</h3>
-					Re-exports <a href="../interfaces/Signature_Signature_h.ISignature.html">ISignature</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="NonCachedSignature" class="tsd-anchor"></a>
-					<h3>Non<wbr>Cached<wbr>Signature</h3>
-					Renames and exports <a href="../classes/Signature_NonCachedSignature.default.html">default</a>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-module">
-					<a name="SignatureBuilder" class="tsd-anchor"></a>
-					<h3>Signature<wbr>Builder</h3>
-					Renames and exports <a href="../classes/Signature_SignatureBuilder.default.html">default</a>
+				<h2>Type aliases</h2>
+				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
+					<a name="ComponentMap" class="tsd-anchor"></a>
+					<h3>Component<wbr>Map</h3>
+					<div class="tsd-signature tsd-kind-icon">Component<wbr>Map<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>classes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span><span class="tsd-signature-symbol"> }</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/joaqim/ecs/blob/53ee0c0/src/Component.h.ts#L12">Component.h.ts:12</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-index-signature">
+								<h5><span class="tsd-signature-symbol">[</span>tag: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../interfaces/Component_h.IComponent.html" class="tsd-signature-type" data-tsd-kind="Interface">IComponent</a></h5>
+							</li>
+							<li class="tsd-parameter">
+								<h5>classes<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{}</span></h5>
+								<ul class="tsd-parameters">
+									<li class="tsd-parameter-index-signature">
+										<h5><span class="tsd-signature-symbol">[</span>tag: <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]: </span><a href="../interfaces/Component_h.IComponentClass.html" class="tsd-signature-type" data-tsd-kind="Interface">IComponentClass</a><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/Component_h.IComponent.html" class="tsd-signature-type" data-tsd-kind="Interface">IComponent</a><span class="tsd-signature-symbol">&gt;</span></h5>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -117,7 +121,7 @@
 					<li class=" ">
 						<a href="../modules.html">Modules</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="Component_h.html">Component.h</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -141,7 +145,7 @@
 					<li class=" tsd-kind-module">
 						<a href="Reflect.html">Reflect</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="Signature.html">Signature</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -175,20 +179,14 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="Signature.html#AbstractSignature" class="tsd-kind-icon">Abstract<wbr>Signature</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module">
+						<a href="../interfaces/Component_h.IComponent.html" class="tsd-kind-icon">IComponent</a>
 					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="Signature.html#CachedSignature" class="tsd-kind-icon">Cached<wbr>Signature</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-module tsd-has-type-parameter">
+						<a href="../interfaces/Component_h.IComponentClass.html" class="tsd-kind-icon">IComponent<wbr>Class</a>
 					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="Signature.html#ISignature" class="tsd-kind-icon">ISignature</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="Signature.html#NonCachedSignature" class="tsd-kind-icon">Non<wbr>Cached<wbr>Signature</a>
-					</li>
-					<li class=" tsd-kind-reference tsd-parent-kind-module">
-						<a href="Signature.html#SignatureBuilder" class="tsd-kind-icon">Signature<wbr>Builder</a>
+					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
+						<a href="Component_h.html#ComponentMap" class="tsd-kind-icon">Component<wbr>Map</a>
 					</li>
 				</ul>
 			</nav>
