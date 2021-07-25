@@ -1,15 +1,14 @@
 import { BaseConstructorPayload } from "./Reflect";
-import "reflect-metadata";
-export interface Component {
+export interface IComponent {
 }
-export interface ComponentClass<T extends Component, U = undefined> {
+export interface IComponentClass<T extends IComponent, U = undefined> {
     readonly name: string;
     readonly tag?: string;
     new (payload?: BaseConstructorPayload<T, U>): T;
 }
 export declare type ComponentMap = {
-    [tag: string]: Component;
+    [tag: string]: IComponent;
     classes: {
-        [tag: string]: ComponentClass<Component>;
+        [tag: string]: IComponentClass<IComponent>;
     };
 };
