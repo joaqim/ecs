@@ -27,7 +27,6 @@ export declare class Entity extends Base<Entity> implements IEntity {
     getComponentByTag(tag: string): IComponent;
     putComponent<T extends IComponent>(ComponentCtor: IComponentClass<T>, payload?: BaseConstructorPayload<T>): IComponent;
     removeComponent<T extends IComponent>(componentClass: IComponentClass<T>): void;
-    static cast<T extends IComponent>(component: IComponent | undefined | null, componentClass: IComponentClass<T>): component is T;
     addListener(listener: IEntityChangeListener): IEntity;
     removeListener(listener: IEntityChangeListener): IEntity;
 }
