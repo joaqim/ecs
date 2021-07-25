@@ -2,7 +2,7 @@
 
 An entity component system made with typescript.
 
-Forked of [@nova-engine/ecs](https://github.com/nova-engine/ecs)
+Fork of [@nova-engine/ecs](https://github.com/nova-engine/ecs)
 
 ## Installing
 
