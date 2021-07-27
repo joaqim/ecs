@@ -163,7 +163,7 @@ export class Entity extends Base<Entity> implements IEntity {
   hasComponent<T extends IComponent>(
     componentClass: IComponentClass<T>
   ): boolean {
-    const tag = componentClass.tag || componentClass.name;
+    const tag = componentClass.tag;
     const component = this.components[tag];
     if (!component) return false;
     if (!componentCast(component, componentClass)) {
@@ -183,7 +183,7 @@ export class Entity extends Base<Entity> implements IEntity {
   getComponent<T extends IComponent>(
     componentClass: IComponentClass<T>
   ): IComponent {
-    const tag = componentClass.tag || componentClass.name;
+    const tag = componentClass.tag;
     const component = this.components[tag];
     if (!component) {
       throw new Error(`Cannot get component "${tag}" from entity.`);
@@ -197,7 +197,7 @@ export class Entity extends Base<Entity> implements IEntity {
   }
 
   getComponentByTag(tag: string): IComponent {
-    // const tag = //componentClass.tag || componentClass.name;
+    // const tag = //componentClass.tag
     const component = this.components[tag];
     const componentClass = this.components.classes[tag];
     if (!component) {
@@ -221,7 +221,7 @@ export class Entity extends Base<Entity> implements IEntity {
     ComponentCtor: IComponentClass<T>,
     payload?: BaseConstructorPayload<T>
   ): IComponent {
-    const tag = ComponentCtor.tag || ComponentCtor.name;
+    const tag = ComponentCtor.tag;
     const component = this.components[tag];
     if (component) {
       if (tag === "_class" || tag === "Entity") {
@@ -261,7 +261,7 @@ export class Entity extends Base<Entity> implements IEntity {
   removeComponent<T extends IComponent>(
     componentClass: IComponentClass<T>
   ): void {
-    const tag = componentClass.tag || componentClass.name;
+    const tag = componentClass.tag;
     const component = this.components[tag];
     if (!component) {
       throw new Error(`Component of tag "${tag}".\nDoes not exists.`);

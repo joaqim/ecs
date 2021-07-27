@@ -4,8 +4,7 @@ import { BaseConstructorPayload } from "./Reflect";
 export interface IComponent {}
 
 export interface IComponentClass<T extends IComponent, U = undefined> {
-  readonly name: string;
-  readonly tag?: string;
+  readonly tag: string;
   new (payload?: BaseConstructorPayload<T, U>): T;
 }
 

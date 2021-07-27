@@ -1,11 +1,14 @@
 import { SignatureBuilder } from "Signature";
 import { Engine } from "Engine";
 import { Entity } from "Entity";
-import { IComponent } from "Component.h";
+import { Base, Model } from "Reflect";
 
-class MyComponent implements IComponent {}
+@Model
+class MyComponent extends Base<MyComponent> {}
 
-class MyOtherComponent implements IComponent {}
+@Model
+class MyOtherComponent extends Base<MyComponent> {}
+
 describe("Signatures work", function () {
   it("Empty signature returns all entities", function () {
     const engine = new Engine();
