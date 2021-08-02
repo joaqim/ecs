@@ -1,7 +1,6 @@
 import { EntityId, Entity, IEntity, EntityHandle } from "Entity";
 import { BaseConstructorPayload } from "Reflect";
 import { v4 as uuidv4 } from "uuid";
-// import { BaseConstructorPayload } from "Reflect";
 
 export class EntityManager {
   entities = new Map<EntityId, IEntity>();

@@ -13,25 +13,15 @@ namespace BadTag {
 }
 
 describe("Entities work", function () {
-  /*
-  it("Can only set id once", function () {
-    const entity = new Entity();
-    expect(entity.id).toBeNull();
-    expect(() => {
-      entity.id = "testing id";
-    }).not.toThrow();
+  const UUID_LENGTH = 36;
 
-    expect(() => (entity.id = "other id")).toThrow();
-    expect(entity.id).not.toEqual("other id");
-  });
-  */
   it("Can retrieve id when set for the first time", function () {
     const entity = new Entity();
-    expect(entity.id).toBeNull();
-    expect(() => (entity.id = "testing id")).not.toThrow();
+    expect(entity.id).not.toBeNull();
     expect(() => entity.id).not.toThrow();
-    expect(entity.id).toEqual("testing id");
+    expect(entity.id).toHaveLength(UUID_LENGTH);
   });
+
   it("Can add a component.", function () {
     const entity = new Entity();
     expect(entity.putComponent(MyComponent)).toBeInstanceOf(MyComponent);
@@ -106,12 +96,15 @@ describe("Entities work", function () {
     */
   });
 
-  it("ID is either null, custom string or generated UUID", () => {
-    expect(new Entity().id).toBeNull();
-    expect(new Entity({}).id).toBeNull();
-    expect(new Entity({ id: "" }).id).not.toBeNull();
-    expect((new Entity({ id: "" }).id as string).length).toBe(36);
-    expect((new Entity({ id: "uuid" }).id as string).length).toBe(36);
+  it("ID is either custom string or generated UUID", () => {
+    // String
+    expect(new Entity({ id: "Test" }).id).toBe("Test");
+
+    // UUID
+    expect(new Entity().id).toHaveLength(UUID_LENGTH);
+    expect(new Entity({}).id).toHaveLength(UUID_LENGTH);
+    expect(new Entity({ id: "" }).id).toHaveLength(UUID_LENGTH);
+    expect(new Entity({ id: "uuid" }).id).toHaveLength(UUID_LENGTH);
   });
   it("Component tag is correct.", () => {
     expect(MyComponent.tag).toBe("MyComponent");

@@ -8,7 +8,7 @@ export const PrimedEntities = (entities: IEntity[]): IEntity[] => {
   return entities;
 };
 
-export const PrimedId = (id?: string | number): EntityId => {
+export const PrimedId = (id?: string): EntityId => {
   if (
     id === undefined ||
     (typeof id === "string" && (id === "" || id.toUpperCase() === "UUID"))
@@ -66,8 +66,8 @@ const PrimedComponentMap = (components?: ComponentMap): ComponentMap => {
  */
 @Model("Entity")
 export class Entity extends Base<Entity> implements IEntity {
-  @Primed(PrimedId, { required: false })
-  id!: EntityId;
+  @Primed(PrimedId, { required: true })
+  readonly id!: EntityId;
 
   private readonly listeners: IEntityChangeListener[] = [];
 
