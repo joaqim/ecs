@@ -110,8 +110,8 @@ describe("Entities work", function () {
     expect(new Entity().id).toBeNull();
     expect(new Entity({}).id).toBeNull();
     expect(new Entity({ id: "" }).id).not.toBeNull();
-    expect(new Entity({ id: "" }).id.length).toBe(36);
-    expect(new Entity({ id: "uuid" }).id.length).toBe(36);
+    expect((new Entity({ id: "" }).id as string).length).toBe(36);
+    expect((new Entity({ id: "uuid" }).id as string).length).toBe(36);
   });
   it("Component tag is correct.", () => {
     expect(MyComponent.tag).toBe("MyComponent");

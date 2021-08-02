@@ -1,10 +1,10 @@
 import { ComponentMap, IComponent, IComponentClass } from "Component.h";
-import { IEntity, IEntityChangeListener } from "Entity";
+import { EntityId, IEntity, IEntityChangeListener } from "Entity";
 import { Base, BaseConstructorPayload } from "Reflect";
 export declare const PrimedEntities: (entities: IEntity[]) => IEntity[];
-export declare const PrimedId: (id?: string | undefined) => string | undefined;
+export declare const PrimedId: (id?: string | number | undefined) => EntityId;
 export declare class Entity extends Base<Entity> implements IEntity {
-    id: string;
+    id: EntityId;
     private readonly listeners;
     componentMap: ComponentMap;
     set components(componentMap: ComponentMap);

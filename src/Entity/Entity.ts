@@ -1,5 +1,5 @@
 import { ComponentMap, IComponent, IComponentClass } from "Component.h";
-import { IEntity, IEntityChangeListener } from "Entity";
+import { EntityId, IEntity, IEntityChangeListener } from "Entity";
 import { Base, BaseConstructorPayload, Model, Primed } from "Reflect";
 import { v4 as uuidv4 } from "uuid";
 
@@ -8,8 +8,12 @@ export const PrimedEntities = (entities: IEntity[]): IEntity[] => {
   return entities;
 };
 
-export const PrimedId = (id?: string): string | undefined => {
-  if (id === "" || id?.toUpperCase() === "UUID") return uuidv4().toString();
+export const PrimedId = (id?: string | number): EntityId => {
+  if (
+    id === undefined ||
+    (typeof id === "string" && (id === "" || id.toUpperCase() === "UUID"))
+  )
+    return uuidv4().toString();
   return id;
 };
 
@@ -63,7 +67,7 @@ const PrimedComponentMap = (components?: ComponentMap): ComponentMap => {
 @Model("Entity")
 export class Entity extends Base<Entity> implements IEntity {
   @Primed(PrimedId, { required: false })
-  id!: string;
+  id!: EntityId;
 
   private readonly listeners: IEntityChangeListener[] = [];
 

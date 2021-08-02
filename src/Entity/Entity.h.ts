@@ -1,8 +1,9 @@
 import { ComponentMap, IComponent, IComponentClass } from "Component.h";
 import { BaseConstructorPayload } from "Reflect";
+import { EntityId } from "./EntityId.h";
 
 export interface IEntity {
-  id: string;
+  id: EntityId;
   set components(componentMap: ComponentMap);
   get components(): ComponentMap;
 
