@@ -8,6 +8,5 @@ export declare abstract class AbstractSignature implements ISignature {
     private readonly excluded;
     constructor(engine: IEngine, included: IComponentClass<IComponent>[], excluded: IComponentClass<IComponent>[]);
     listEntities(): ReadonlyArray<IEntity>;
-    abstract readonly entities: ReadonlyArray<IEntity>;
     includesEntity: (entity: IEntity) => boolean;
 }

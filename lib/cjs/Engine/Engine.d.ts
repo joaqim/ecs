@@ -13,8 +13,8 @@ export declare class Engine extends Base<Engine> implements IEngine {
     awake(): IEngine;
     get entities(): IEntity[];
     set entities(entities: IEntity[]);
-    addEntityListener(listener: IEngineEntityListener): IEngine;
-    removeEntityListener(listener: IEngineEntityListener): IEngine;
+    addEntityListener(listener: IEngineEntityListener): void;
+    removeEntityListener(listener: IEngineEntityListener): void;
     addEntity(entity: IEntity): IEngine;
     addEntities(...entities: IEntity[]): IEngine;
     removeEntity(entity: IEntity): IEngine;
@@ -23,5 +23,5 @@ export declare class Engine extends Base<Engine> implements IEngine {
     addSystems(...systems: ISystem[]): void;
     removeSystem(system: ISystem): void;
     removeSystems(...systems: ISystem[]): void;
-    update(delta: number): void;
+    update(delta: number): any;
 }

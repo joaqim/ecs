@@ -4,7 +4,9 @@ import { Entity } from "Entity";
 import { Base, Model } from "Reflect";
 
 @Model
-class MyComponent extends Base<MyComponent> {}
+class MyComponent extends Base<MyComponent> {
+  value: string;
+}
 
 @Model
 class MyOtherComponent extends Base<MyComponent> {}
@@ -45,5 +47,17 @@ describe("Signatures work", function () {
     expect(signature.listEntities().indexOf(entity)).toEqual(-1);
     expect(signature.listEntities().length).not.toEqual(engine.entities.length);
     expect(signature.listEntities().length).not.toEqual(0);
+  });
+  it("Signature can update entity component values", () => {
+    const engine = new Engine();
+    const entity = new Entity();
+    entity.putComponent(MyComponent);
+    engine.addEntity(entity);
+    const signature = new SignatureBuilder(engine).include(MyComponent).build();
+
+    (entity.getComponent(MyComponent) as MyComponent).value = "TEST";
+    expect((entity.getComponent(MyComponent) as MyComponent).value).toEqual(
+      "TEST"
+    );
   });
 });

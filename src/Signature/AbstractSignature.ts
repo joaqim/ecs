@@ -29,10 +29,8 @@ export abstract class AbstractSignature implements ISignature {
     return this.engine.listEntities().filter(this.includesEntity);
   }
 
-  abstract readonly entities: ReadonlyArray<IEntity>;
-
   includesEntity = (entity: IEntity) => {
-    // TODO: Better array loop
+    // TODO: Better array loop (loop over entries/keys ?)
     // eslint-disable-next-line no-restricted-syntax
     for (const include of this.included) {
       if (!entity.hasComponent(include)) {

@@ -30,7 +30,7 @@ export class Engine extends Base<Engine> implements IEngine {
   // @Primed(Entity, { array: true })
   // public _entities!: Entity[];
   /** Public list of entity listeners */
-  // public _entityListeners: EngineEntityListener[] = [];
+  // public _entityListeners: IEngineEntityListener[] = [];
 
   @Primed(PrimedEntityMap)
   public entityMap: EntityMap;
@@ -80,23 +80,21 @@ export class Engine extends Base<Engine> implements IEngine {
    * Adds a listener for when entities are added or removed.
    * @param listener The listener waiting to add
    */
-  addEntityListener(listener: IEngineEntityListener): IEngine {
+  addEntityListener(listener: IEngineEntityListener) {
     if (this.entityMap.listeners.indexOf(listener) === -1) {
       this.entityMap.listeners.push(listener);
     }
-    return this;
   }
 
   /**
    * Removes a listener from the entity listener list.
    * @param listener The listener to remove
    */
-  removeEntityListener(listener: IEngineEntityListener): IEngine {
+  removeEntityListener(listener: IEngineEntityListener) {
     const index = this.entityMap.listeners.indexOf(listener);
     if (index !== -1) {
       this.entityMap.listeners.splice(index, 1);
     }
-    return this;
   }
 
   /**
@@ -199,7 +197,7 @@ export class Engine extends Base<Engine> implements IEngine {
    * Updates all systems added to the engine.
    * @param delta Time elapsed (in milliseconds) since the last update.
    */
-  update(delta: number): void {
+  update(delta: number): any {
     if (this.systemsNeedSorting) {
       this.systemsNeedSorting = false;
       this.systems.sort((a, b) => a.priority - b.priority);

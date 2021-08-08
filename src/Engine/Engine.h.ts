@@ -18,7 +18,7 @@ export interface IEngine {
   entityMap: EntityMap;
 
   awake(): IEngine;
-  update(delta: number): void;
+  update(delta: number): any;
   removeEntity(entity: IEntity): void;
   removeEntities(...entities: IEntity[]): void;
 
@@ -29,5 +29,7 @@ export interface IEngine {
 
   listEntities(): ReadonlyArray<IEntity>;
   notifyPriorityChange(system: ISystem): void;
+
   addEntityListener(listener: IEngineEntityListener): void;
+  removeEntityListener(listener: IEngineEntityListener): void;
 }
