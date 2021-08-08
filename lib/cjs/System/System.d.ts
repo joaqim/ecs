@@ -10,6 +10,6 @@ declare abstract class System implements ISystem {
     listEngines(): readonly IEngine[];
     onAttach(engine: IEngine): void;
     onDetach(engine: IEngine): void;
-    abstract update(engine: IEngine, delta: number): void;
+    abstract update(engine: IEngine, delta: number): any;
 }
 export { System };

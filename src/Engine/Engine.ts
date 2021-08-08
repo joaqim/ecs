@@ -202,6 +202,7 @@ export class Engine extends Base<Engine> implements IEngine {
       this.systemsNeedSorting = false;
       this.systems.sort((a, b) => a.priority - b.priority);
     }
-    this.systems.forEach((system: ISystem) => system.update(this, delta));
+
+    return this.systems.map((system: ISystem) => system.update(this, delta));
   }
 }

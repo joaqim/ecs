@@ -15,7 +15,7 @@ class MySystem extends System {
     this.signature = null;
   }
 
-  update(_engine: IEngine, _delta: number) {}
+  update(_engine: IEngine, _delta: number): any {}
 }
 
 describe("Systems works", function () {

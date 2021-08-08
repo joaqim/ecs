@@ -34,6 +34,34 @@ class LogEntitySystem extends System {
   }
 }
 
+@Model("BoxComponent")
+class BoxComponent extends Base<BoxComponent> {
+  x: number;
+  y: number;
+}
+
+class RenderSystem extends System {
+  signature: ISignature;
+  onAttach(engine: IEngine) {
+    super.onAttach(engine);
+    this.signature = new SignatureBuilder(engine).include(BoxComponent).build();
+  }
+
+  update(engine: IEngine, delta: number): any {
+    let elements = {};
+    let keyCount = 0;
+    for (let entity of this.signature.listEntities()) {
+      const box = entity.getComponent(BoxComponent) as BoxComponent;
+      elements = {
+        ...elements,
+        [entity.id + "_" + keyCount.toString()]: { ...box },
+      };
+      keyCount += 1;
+    }
+    return elements;
+  }
+}
+
 describe("Engine >>>", () => {
   let engine: Engine;
   let entity: Entity;
@@ -85,5 +113,25 @@ describe("Engine >>>", () => {
     engine.removeSystem(logSystem);
     expect(spySystemDetach).toHaveBeenCalledWith(engine);
     expect(spySystemDetach).toHaveBeenCalledTimes(1);
+  });
+
+  it("can use Objects returned from systems update()", () => {
+    engine = new Engine({
+      entityMap: {
+        entities: [
+          new Entity({
+            id: "BOX",
+            components: {
+              BoxComponent: new BoxComponent({ x: 100, y: 100 }),
+              LogComponent: new LogComponent(),
+              classes: { BoxComponent, LogComponent },
+            },
+          }),
+        ],
+      },
+      systems: [new RenderSystem()],
+    });
+    engine.awake();
+    expect(engine.update(delta)[0]).toEqual({ BOX_0: { x: 100, y: 100 } });
   });
 });
