@@ -1,6 +1,6 @@
-import { Engine, IEngine } from "Engine";
-import { ISignature, SignatureBuilder } from "Signature";
-import { System } from "System";
+import { Engine, IEngine } from "../Engine";
+import { ISignature, SignatureBuilder } from "../Signature";
+import { System } from "../System";
 
 class MySystem extends System {
   public signature: ISignature | null = null;

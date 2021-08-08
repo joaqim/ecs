@@ -1,5 +1,5 @@
-import { IEngine } from "Engine";
-import { ISystem } from "System";
+import { IEngine } from "../Engine";
+import { ISystem } from "../System";
 export declare const PrimedSystems: (systems: ISystem[]) => ISystem[];
 declare abstract class System implements ISystem {
     priority: number;

@@ -14,8 +14,6 @@
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "outDir": "lib/esm",
-    "baseUrl": "src",
-    "paths": { "src/*": ["src/*"] },
     "allowJs": true,
     "lib": ["ESNext", "DOM"],
     "types": ["jest", "reflect-metadata"]

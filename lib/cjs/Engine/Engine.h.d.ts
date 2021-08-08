@@ -1,5 +1,5 @@
-import { IEntity } from "Entity";
-import { ISystem } from "System";
+import { ISystem } from "../System";
+import { IEntity } from "../Entity";
 export interface IEngineEntityListener {
     onEntityAdded(entity: IEntity): void;
     onEntityRemoved(entity: IEntity): void;

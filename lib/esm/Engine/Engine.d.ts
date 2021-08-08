@@ -1,7 +1,7 @@
-import { EntityMap, IEngine, IEngineEntityListener } from "Engine";
-import { IEntity } from "Entity";
-import { Base, BaseConstructorPayload } from "Reflect";
-import { ISystem } from "System";
+import { EntityMap, IEngine, IEngineEntityListener } from "./Engine.h";
+import { IEntity } from "../Entity";
+import { Base, BaseConstructorPayload } from "../Reflect";
+import { ISystem } from "../System";
 export declare const PrimedEntityMap: (entityMap: EntityMap) => EntityMap;
 export declare class Engine extends Base<Engine> implements IEngine {
     entityMap: EntityMap;

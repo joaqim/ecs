@@ -1,4 +1,5 @@
-import { EntityId, IEntity } from "Entity";
+import { IEntity } from "./Entity.h";
+import { EntityId } from "./EntityId.h";
 import { IEntityHandle } from "./EntityHandle.h";
 import { EntityManager } from "./EntityManager";
 export declare class EntityHandle implements IEntityHandle {

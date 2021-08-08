@@ -1,6 +1,6 @@
-import { IComponent, IComponentClass } from "Component.h";
-import { IEngine } from "Engine";
-import { ISignature } from "Signature";
+import { IComponent, IComponentClass } from "../Component.h";
+import { IEngine } from "../Engine";
+import { ISignature } from "./Signature.h";
 import { CachedSignature } from "./CachedSignature";
 import { NonCachedSignature } from "./NonCachedSignature";
 

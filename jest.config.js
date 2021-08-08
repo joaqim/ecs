@@ -1,11 +1,3 @@
-/* eslint-disable import/order */
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable no-undef */
-const { pathsToModuleNameMapper } = require("ts-jest/utils");
-const { compilerOptions } = require("./tsconfig.json");
-const moduleNameMapper = pathsToModuleNameMapper(compilerOptions.paths, {
-  prefix: "<rootDir>/",
-});
 module.exports = {
   preset: "ts-jest",
   testEnvironment: "node",
@@ -17,6 +9,4 @@ module.exports = {
   transform: {
     "^.+\\.(t|j)s$": "ts-jest",
   },
-  moduleNameMapper,
-  modulePaths: ["<rootDir>/src"],
 };

@@ -1,6 +1,6 @@
-import { IComponent, IComponentClass } from "Component.h";
-import { IEngine } from "Engine";
-import { IEntity, IEntityChangeListener } from "Entity";
+import { IComponent, IComponentClass } from "../Component.h";
+import { IEngine } from "../Engine";
+import { IEntity, IEntityChangeListener } from "../Entity";
 import { AbstractSignature } from "./AbstractSignature";
 export declare class CachedSignature extends AbstractSignature implements IEntityChangeListener {
     private needEntityRefresh;

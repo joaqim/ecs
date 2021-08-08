@@ -1,7 +1,7 @@
-import { EntityMap, IEngine, IEngineEntityListener } from "Engine";
-import { IEntity } from "Entity";
-import { Base, BaseConstructorPayload, Model, Primed } from "Reflect";
-import { ISystem, PrimedSystems } from "System";
+import { EntityMap, IEngine, IEngineEntityListener } from "./Engine.h";
+import { IEntity } from "../Entity";
+import { Base, BaseConstructorPayload, Model, Primed } from "../Reflect";
+import { ISystem, PrimedSystems } from "../System";
 
 export const PrimedEntityMap = (entityMap: EntityMap): EntityMap => {
   if (entityMap?.entities !== null && entityMap?.entities !== undefined) {

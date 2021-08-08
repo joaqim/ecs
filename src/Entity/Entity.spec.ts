@@ -1,5 +1,5 @@
-import { Entity } from "Entity";
-import { Base, Model } from "Reflect";
+import { Entity } from "./Entity";
+import { Base, Model } from "../Reflect";
 
 @Model
 class MyComponent extends Base<MyComponent> {

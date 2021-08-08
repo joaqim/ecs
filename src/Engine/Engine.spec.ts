@@ -1,8 +1,8 @@
-import { Engine, IEngine, IEngineEntityListener } from "Engine";
-import { Entity, IEntity } from "Entity";
-import { Base, Model } from "Reflect";
-import { ISignature, SignatureBuilder } from "Signature";
-import { System } from "System";
+import { Engine, IEngine, IEngineEntityListener } from "./";
+import { Entity, IEntity } from "../Entity";
+import { Base, Model } from "../Reflect";
+import { ISignature, SignatureBuilder } from "../Signature";
+import { System } from "../System";
 
 class MockSystem extends System {
   update(engine: IEngine, delta: number): void {}
@@ -54,7 +54,7 @@ class RenderSystem extends System {
       const box = entity.getComponent(BoxComponent) as BoxComponent;
       elements = {
         ...elements,
-        [entity.id + "_" + keyCount.toString()]: { ...box },
+        [`${entity.id}_${keyCount.toString()}`]: { ...box },
       };
       keyCount += 1;
     }

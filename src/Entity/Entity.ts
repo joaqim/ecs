@@ -1,7 +1,8 @@
-import { ComponentMap, IComponent, IComponentClass } from "Component.h";
-import { EntityId, IEntity, IEntityChangeListener } from "Entity";
-import { Base, BaseConstructorPayload, Model, Primed } from "Reflect";
 import { v4 as uuidv4 } from "uuid";
+import { ComponentMap, IComponent, IComponentClass } from "../Component.h";
+import { Base, BaseConstructorPayload, Model, Primed } from "../Reflect";
+import { IEntity, IEntityChangeListener } from "./Entity.h";
+import { EntityId } from "./EntityId.h";
 
 export const PrimedEntities = (entities: IEntity[]): IEntity[] => {
   if (entities === undefined) return [];

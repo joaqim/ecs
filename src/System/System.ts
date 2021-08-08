@@ -1,5 +1,5 @@
-import { IEngine } from "Engine";
-import { ISystem } from "System";
+import { IEngine } from "../Engine";
+import { ISystem } from "../System";
 
 export const PrimedSystems = (systems: ISystem[]): ISystem[] => {
   if (systems === undefined) return [];

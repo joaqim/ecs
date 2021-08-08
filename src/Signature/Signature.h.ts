@@ -1,4 +1,4 @@
-import { IEntity } from "Entity";
+import { IEntity } from "../Entity";
 
 /**
  * A signature is a criteria to separate your entities.

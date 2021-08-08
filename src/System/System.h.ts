@@ -1,4 +1,4 @@
-import { IEngine } from "Engine";
+import { IEngine } from "../Engine";
 
 export interface ISystem {
   priority: number;
