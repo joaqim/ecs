@@ -1,6 +1,6 @@
-import { IComponent, IComponentClass } from "../Component.h";
-import { IEngine } from "../Engine";
-import { ISignature } from "./Signature.h";
+import type { IComponent, IComponentClass } from "../Component.h";
+import type { IEngine } from "../Engine";
+import type { ISignature } from "./Signature.h";
 export declare class SignatureBuilder {
     private engine;
     private cached;

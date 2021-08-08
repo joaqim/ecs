@@ -1,8 +1,9 @@
-import { Engine, IEngine, IEngineEntityListener } from "./";
+import type { IEngine, IEngineEntityListener } from "./Engine.h";
 import { Entity, IEntity } from "../Entity";
 import { Base, Model } from "../Reflect";
 import { ISignature, SignatureBuilder } from "../Signature";
 import { System } from "../System";
+import { Engine } from "./Engine";
 
 class MockSystem extends System {
   update(engine: IEngine, delta: number): void {}

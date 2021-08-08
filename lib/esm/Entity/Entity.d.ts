@@ -1,7 +1,7 @@
-import { ComponentMap, IComponent, IComponentClass } from "../Component.h";
+import type { ComponentMap, IComponent, IComponentClass } from "../Component.h";
 import { Base, BaseConstructorPayload } from "../Reflect";
-import { IEntity, IEntityChangeListener } from "./Entity.h";
-import { EntityId } from "./EntityId.h";
+import type { IEntity, IEntityChangeListener } from "./Entity.h";
+import type { EntityId } from "./EntityId.h";
 export declare const PrimedEntities: (entities: IEntity[]) => IEntity[];
 export declare const PrimedId: (id?: string | undefined) => EntityId;
 export declare class Entity extends Base<Entity> implements IEntity {

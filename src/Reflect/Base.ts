@@ -1,109 +1,23 @@
+// Adapted from 'primed-model': https://github.com/cuzox/primed-model
 /* eslint-disable */
 import "reflect-metadata";
-
-const PRIMED_PROPERTIES_META = Symbol("PRIMED_PROPERTIES_META");
-const CLASS_NAME_MAPPING = Symbol("CLASS_NAME_MAPPING");
-const CLASS_NAME = Symbol("CLASS_NAME");
-
-export type Constructor<T = any> = { new (...args: any[]): T };
-export type Factory = Function | Constructor | string;
-export type Indexable = { [key: string]: any };
-
-//https://github.com/krzkaczor/ts-essentials
-export type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends Array<infer U>
-    ? Array<DeepPartial<U>>
-    : T[P] extends ReadonlyArray<infer U>
-    ? ReadonlyArray<DeepPartial<U>>
-    : DeepPartial<T[P]>;
-};
-
-export type BaseConstructorPayload<T, U = undefined> = DeepPartial<
-  U extends undefined ? T : T | U
->;
-
-export interface PropertiesMeta {
-  [key: string]: {
-    factory: Factory;
-    options: PropertyOptions;
-  };
-}
-
-export interface ClassNameMapping {
-  [key: string]: Constructor;
-}
-
-export class PropertyOptions {
-  required?: boolean = true;
-  array?: boolean = false;
-}
-
-export function Model(constructor: Constructor): void;
-export function Model(name: string): (constructor: Constructor) => void;
-export function Model<T extends Constructor>(constructorOrName: string | T) {
-  const classNameMappingMetadata =
-    Reflect.getMetadata(CLASS_NAME_MAPPING, Base.constructor) || {};
-
-  if (typeof constructorOrName === "string") {
-    return (constructor: T) => {
-      const _class = class extends constructor {
-        public static readonly tag = constructorOrName;
-        constructor(...args: any[]) {
-          super();
-          this.init(args[0], args[1]);
-          //this.tag = constructorOrName;
-        }
-      };
-
-      classNameMappingMetadata[constructorOrName] = _class;
-      Reflect.defineMetadata(
-        CLASS_NAME_MAPPING,
-        classNameMappingMetadata,
-        Base.constructor
-      );
-      Reflect.defineMetadata(CLASS_NAME, constructorOrName, constructor);
-      return _class;
-    };
-  } else {
-    const _class = class extends constructorOrName {
-      public static readonly tag: string = (constructorOrName as Constructor)
-        .name;
-      constructor(...args: any[]) {
-        super();
-        this.init(args[0], args[1]);
-      }
-    };
-
-    classNameMappingMetadata[constructorOrName.name] = _class;
-    Reflect.defineMetadata(
-      CLASS_NAME_MAPPING,
-      classNameMappingMetadata,
-      Base.constructor
-    );
-    Reflect.defineMetadata(
-      CLASS_NAME,
-      constructorOrName.name,
-      constructorOrName
-    );
-    return _class;
-  }
-}
-
-export function Primed(
-  factory: Factory,
-  propertyOptions: PropertyOptions = {}
-) {
-  return (instance: any, propertyKey: string | symbol) => {
-    const options = Object.assign(new PropertyOptions(), propertyOptions);
-    const metadata =
-      Reflect.getMetadata(PRIMED_PROPERTIES_META, instance) || {};
-    metadata[propertyKey] = { factory, options };
-    Reflect.defineMetadata(PRIMED_PROPERTIES_META, metadata, instance);
-  };
-}
+import type {
+  BaseConstructorPayload,
+  ClassNameMapping,
+  Constructor,
+  Indexable,
+  PropertiesMeta,
+} from "./Reflect.h";
+import {
+  CLASS_NAME,
+  CLASS_NAME_MAPPING,
+  PRIMED_PROPERTIES_META,
+} from "./Symbols";
 
 export class Base<T, U = undefined> {
   // Method purely for typing purposes
+  // eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-useless-constructor
   constructor(payload?: BaseConstructorPayload<T, U>) {}
 
   public static readonly tag: string;
@@ -123,9 +37,11 @@ export class Base<T, U = undefined> {
       [] as string[]
     );
 
+    // eslint-disable-next-line no-restricted-syntax
     for (const key of notPrimed) {
       const desc = Object.getOwnPropertyDescriptor(this, key);
       if (
+        // eslint-disable-next-line no-prototype-builtins
         this.hasOwnProperty(key) &&
         (!desc || desc.writable === true || typeof desc.set === "function")
       ) {
@@ -204,16 +120,18 @@ export class Base<T, U = undefined> {
     return this;
   }
 
+  // eslint-disable-next-line class-methods-use-this
   private makeEnumerableGetters(instance: any) {
     for (
       let o = instance;
-      o != Object.prototype;
+      o !== Object.prototype;
       o = Object.getPrototypeOf(o)
     ) {
-      for (let name of Object.getOwnPropertyNames(o)) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const name of Object.getOwnPropertyNames(o)) {
         const desc = Object.getOwnPropertyDescriptor(o, name) || {};
         const hasGetter = typeof desc.get === "function";
-        //if (hasGetter && name != "id" && name != "_id") {
+        // if (hasGetter && name != "id" && name != "_id") {
         if (hasGetter) {
           desc.enumerable = true;
           Object.defineProperty(instance, name, desc);

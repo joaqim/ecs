@@ -1,7 +1,7 @@
-import { IComponent, IComponentClass } from "../Component.h";
-import { IEngine } from "../Engine";
-import { IEntity } from "../Entity";
-import { ISignature } from "./Signature.h";
+import type { IComponent, IComponentClass } from "../Component.h";
+import type { IEngine } from "../Engine";
+import type { IEntity } from "../Entity";
+import type { ISignature } from "./Signature.h";
 
 /**
  * An abstract signature is the base implementation of a signature interface.

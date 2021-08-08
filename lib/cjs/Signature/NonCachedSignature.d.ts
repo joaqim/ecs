@@ -1,4 +1,4 @@
-import { IEntity } from "../Entity";
+import type { IEntity } from "../Entity";
 import { AbstractSignature } from "./AbstractSignature";
 export declare class NonCachedSignature extends AbstractSignature {
     entities: readonly IEntity[];

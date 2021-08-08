@@ -1,7 +1,8 @@
-import { EntityMap, IEngine, IEngineEntityListener } from "./Engine.h";
-import { IEntity } from "../Entity";
+import type { EntityMap, IEngine, IEngineEntityListener } from "./Engine.h";
+import type { ISystem } from "../System";
+import type { IEntity } from "../Entity";
 import { Base, BaseConstructorPayload, Model, Primed } from "../Reflect";
-import { ISystem, PrimedSystems } from "../System";
+import { PrimedSystems } from "../System/System";
 
 export const PrimedEntityMap = (entityMap: EntityMap): EntityMap => {
   if (entityMap?.entities !== null && entityMap?.entities !== undefined) {
@@ -58,11 +59,17 @@ export class Engine extends Base<Engine> implements IEngine {
     this.systemsNeedSorting = true;
   }
 
+  /**
+   * @param Engine payload/configuration
+   */
   // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(payload?: BaseConstructorPayload<Engine, undefined>) {
     super(payload);
   }
 
+  /**
+   * Awakes the systems, necessary to use Engine
+   */
   awake(): IEngine {
     this.systems.forEach((system: ISystem) => system.onAttach(this));
     return this;

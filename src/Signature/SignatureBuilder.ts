@@ -1,8 +1,8 @@
-import { IComponent, IComponentClass } from "../Component.h";
-import { IEngine } from "../Engine";
-import { ISignature } from "./Signature.h";
+import type { IComponent, IComponentClass } from "../Component.h";
 import { CachedSignature } from "./CachedSignature";
 import { NonCachedSignature } from "./NonCachedSignature";
+import type { IEngine } from "../Engine";
+import type { ISignature } from "./Signature.h";
 
 /**
  * Utility class to build Signatures.

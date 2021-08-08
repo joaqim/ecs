@@ -1,4 +1,4 @@
-import { IEngine } from "../Engine";
+import type { IEngine } from "../Engine/Engine.h";
 export interface ISystem {
     priority: number;
     onAttach(engine: IEngine): void;

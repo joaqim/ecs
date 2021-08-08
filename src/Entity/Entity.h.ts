@@ -1,6 +1,6 @@
-import { ComponentMap, IComponent, IComponentClass } from "../Component.h";
-import { BaseConstructorPayload } from "../Reflect";
-import { EntityId } from "./EntityId.h";
+import type { ComponentMap, IComponent, IComponentClass } from "../Component.h";
+import type { BaseConstructorPayload } from "../Reflect";
+import type { EntityId } from "./EntityId.h";
 
 export interface IEntity {
   id: EntityId;

@@ -1,4 +1,4 @@
-import { IEntity } from "../Entity";
+import type { IEntity } from "../Entity";
 import { AbstractSignature } from "./AbstractSignature";
 
 /**
