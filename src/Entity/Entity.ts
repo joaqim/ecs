@@ -1,6 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
+import {
+  Base,
+  BaseConstructorPayload,
+  Model,
+  Primed,
+} from "@joaqim/primed-model";
 import type { ComponentMap, IComponent, IComponentClass } from "../Component.h";
-import { Base, BaseConstructorPayload, Model, Primed } from "../Reflect";
 import type { IEntity, IEntityChangeListener } from "./Entity.h";
 import type { EntityId } from "./EntityId.h";
 
