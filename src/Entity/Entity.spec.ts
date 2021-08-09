@@ -1,5 +1,5 @@
 import { Entity } from "./Entity";
-import { Base, Model } from "../Reflect";
+import { Base, Model } from "@joaqim/primed-model";
 
 @Model
 class MyComponent extends Base<MyComponent> {

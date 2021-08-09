@@ -1,5 +1,5 @@
+import { Base, BaseConstructorPayload } from "@joaqim/primed-model";
 import type { ComponentMap, IComponent, IComponentClass } from "../Component.h";
-import { Base, BaseConstructorPayload } from "../Reflect";
 import type { IEntity, IEntityChangeListener } from "./Entity.h";
 import type { EntityId } from "./EntityId.h";
 export declare const PrimedEntities: (entities: IEntity[]) => IEntity[];

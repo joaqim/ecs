@@ -1,7 +1,12 @@
+import {
+  Base,
+  BaseConstructorPayload,
+  Model,
+  Primed,
+} from "@joaqim/primed-model";
 import type { EntityMap, IEngine, IEngineEntityListener } from "./Engine.h";
 import type { ISystem } from "../System";
 import type { IEntity } from "../Entity";
-import { Base, BaseConstructorPayload, Model, Primed } from "../Reflect";
 import { PrimedSystems } from "../System/System";
 
 export const PrimedEntityMap = (entityMap: EntityMap): EntityMap => {
