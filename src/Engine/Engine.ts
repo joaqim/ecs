@@ -1,7 +1,12 @@
+import {
+  Base,
+  BaseConstructorPayload,
+  Model,
+  Primed,
+} from "@joaqim/primed-model";
 import type { EntityMap, IEngine, IEngineEntityListener } from "./Engine.h";
 import type { ISystem } from "../System";
 import type { IEntity } from "../Entity";
-import { Base, BaseConstructorPayload, Model, Primed } from "../Reflect";
 import { PrimedSystems } from "../System/System";
 
 export const PrimedEntityMap = (entityMap: EntityMap): EntityMap => {
@@ -109,7 +114,7 @@ export class Engine extends Base<Engine> implements IEngine {
    * The listeners will be notified.
    * @param entity The entity to add
    */
-  addEntity(entity: IEntity): IEngine {
+  addEntity(entity: IEntity) {
     if (this.entities.indexOf(entity) === -1) {
       this.entities.push(entity);
       this.entityMap.listeners.forEach((listener: IEngineEntityListener) => {
@@ -124,7 +129,7 @@ export class Engine extends Base<Engine> implements IEngine {
    * The listeners will be notified once per entity.
    * @param entities The list of entities to add
    */
-  addEntities(...entities: IEntity[]): IEngine {
+  addEntities(...entities: IEntity[]) {
     entities.forEach((entity: IEntity) => {
       this.entityMap.listeners.forEach((listener: IEngineEntityListener) =>
         listener.onEntityAdded(entity)
@@ -139,7 +144,7 @@ export class Engine extends Base<Engine> implements IEngine {
    * The listeners will be notified.
    * @param entity The entity to remove
    */
-  removeEntity(entity: IEntity): IEngine {
+  removeEntity(entity: IEntity) {
     const index = this.entities.indexOf(entity);
     if (index !== -1) {
       this.entities.splice(index, 1);
@@ -155,7 +160,7 @@ export class Engine extends Base<Engine> implements IEngine {
    * The listeners will be notified once per entity.
    * @param entities The list of entities to remove
    */
-  removeEntities(...entities: IEntity[]): void {
+  removeEntities(...entities: IEntity[]) {
     entities.forEach((entity: IEntity) => this.removeEntity(entity));
   }
 
@@ -163,7 +168,7 @@ export class Engine extends Base<Engine> implements IEngine {
    * Adds a system to the engine.
    * @param system The system to add.
    */
-  addSystem(system: ISystem): void {
+  addSystem(system: ISystem) {
     const index = this.systems.indexOf(system);
     if (index === -1) {
       this.systems.push(system);
@@ -176,7 +181,7 @@ export class Engine extends Base<Engine> implements IEngine {
    * Adds a list of systems to the engine.
    * @param systems The list of systems to add.
    */
-  addSystems(...systems: ISystem[]): void {
+  addSystems(...systems: ISystem[]) {
     systems.forEach((system: ISystem) => this.addSystem(system));
   }
 

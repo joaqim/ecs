@@ -1,4 +1,4 @@
-import { BaseConstructorPayload } from "./Reflect";
+import { BaseConstructorPayload } from "@joaqim/primed-model";
 export interface IComponent {
 }
 export interface IComponentClass<T extends IComponent, U = undefined> {

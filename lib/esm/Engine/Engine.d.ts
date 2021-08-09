@@ -1,7 +1,7 @@
+import { Base, BaseConstructorPayload } from "@joaqim/primed-model";
 import type { EntityMap, IEngine, IEngineEntityListener } from "./Engine.h";
 import type { ISystem } from "../System";
 import type { IEntity } from "../Entity";
-import { Base, BaseConstructorPayload } from "../Reflect";
 export declare const PrimedEntityMap: (entityMap: EntityMap) => EntityMap;
 export declare class Engine extends Base<Engine> implements IEngine {
     entityMap: EntityMap;

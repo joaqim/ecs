@@ -1,4 +1,4 @@
-import { BaseConstructorPayload } from "./Reflect";
+import { BaseConstructorPayload } from "@joaqim/primed-model";
 
 // eslint-disable-next-line
 export interface IComponent {}

@@ -1,5 +1,5 @@
+import type { BaseConstructorPayload } from "@joaqim/primed-model";
 import type { ComponentMap, IComponent, IComponentClass } from "../Component.h";
-import type { BaseConstructorPayload } from "../Reflect";
 import type { EntityId } from "./EntityId.h";
 export interface IEntity {
     id: EntityId;

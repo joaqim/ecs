@@ -19,6 +19,10 @@ export interface IEngine {
 
   awake(): IEngine;
   update(delta: number): any;
+
+  addEntity(entity: IEntity): void;
+  addEntities(...entities: IEntity[]): void;
+
   removeEntity(entity: IEntity): void;
   removeEntities(...entities: IEntity[]): void;
 
