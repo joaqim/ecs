@@ -15,9 +15,9 @@ export declare class Engine extends Base<Engine> implements IEngine {
     set entities(entities: IEntity[]);
     addEntityListener(listener: IEngineEntityListener): void;
     removeEntityListener(listener: IEngineEntityListener): void;
-    addEntity(entity: IEntity): IEngine;
-    addEntities(...entities: IEntity[]): IEngine;
-    removeEntity(entity: IEntity): IEngine;
+    addEntity(entity: IEntity): this;
+    addEntities(...entities: IEntity[]): this;
+    removeEntity(entity: IEntity): this;
     removeEntities(...entities: IEntity[]): void;
     addSystem(system: ISystem): void;
     addSystems(...systems: ISystem[]): void;
