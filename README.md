@@ -4,6 +4,8 @@ An entity component system made with typescript.
 
 Fork of [@nova-engine/ecs](https://github.com/nova-engine/ecs)
 
+- [ECS - C++ implementation](https://austinmorlan.com/posts/entity_component_system/#the-component-manager)
+- [ECS - Vague but good example of TypeScript impl.](https://jerrygreen.me/blog/making-custom-game-engine)
 ## Installing
 
 ```sh
