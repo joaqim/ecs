@@ -1,17 +1,31 @@
-import { SignatureBuilder } from "../Signature";
+import { CachedSignature, SignatureBuilder } from "../Signature";
 import { Engine } from "../Engine";
-import { Entity } from "../Entity";
-import { Base, Model } from "@joaqim/primed-model";
+import { Component } from "../Component";
+import { EntityConfig } from "../Entity.h";
 
-@Model
-class MyComponent extends Base<MyComponent> {
-  value: string;
-}
+class MyComponent extends Component({ value: "" }) {}
+class MyOtherComponent extends Component({}) {}
 
-@Model
-class MyOtherComponent extends Base<MyComponent> {}
+type MyEntityType = EntityConfig<{ mc: MyComponent }>;
+class MyEntity extends Entity({ mc: MyComponent }) {}
+
+export class BaseSignature<T> {}
 
 describe("Signatures work", function () {
+  it("", () => {
+    let engine = new Engine();
+    let entity = new MyEntity({ c: {} });
+    /*
+    let sig1 = new CachedSignature<MyEntity>(
+      engine,
+      [MyComponent],
+      [MyOtherComponent]
+    );
+    */
+
+    let e: MyEntity;
+  });
+  /*
   it("Empty signature returns all entities", function () {
     const engine = new Engine();
     engine.addEntities(new Entity(), new Entity());
@@ -26,8 +40,8 @@ describe("Signatures work", function () {
   it("Signature includes the corresponding entity for inclusion", function () {
     const engine = new Engine();
     const entity = new Entity();
-    entity.putComponent(MyComponent);
-    entity.putComponent(MyOtherComponent);
+    entity.addComponent({ type: MyComponent, value: "value" });
+    entity.addComponent({ type: MyOtherComponent });
     engine.addEntities(entity, new Entity());
     const builder = new SignatureBuilder(engine);
     builder.include(MyComponent, MyOtherComponent);
@@ -39,7 +53,7 @@ describe("Signatures work", function () {
   it("Signature includes the corresponding entity for exclusion", function () {
     const engine = new Engine();
     const entity = new Entity();
-    entity.putComponent(MyComponent);
+    entity.addComponent({ type: MyComponent, value: "value" });
     engine.addEntities(entity, new Entity());
     const builder = new SignatureBuilder(engine);
     builder.exclude(MyComponent);
@@ -51,13 +65,15 @@ describe("Signatures work", function () {
   it("Signature can update entity component values", () => {
     const engine = new Engine();
     const entity = new Entity();
-    entity.putComponent(MyComponent);
+    entity.addComponent({ type: MyComponent, value: "value" });
     engine.addEntity(entity);
     const signature = new SignatureBuilder(engine).include(MyComponent).build();
 
-    (entity.getComponent(MyComponent) as MyComponent).value = "TEST";
-    expect((entity.getComponent(MyComponent) as MyComponent).value).toEqual(
-      "TEST"
-    );
+    expect(entity.getComponent(MyComponent)).toEqual("value");
+    entity.getComponent(MyComponent).value = "new value";
+    expect(entity.getComponent(MyComponent)).toEqual("new value");
+    //(entity.getComponent(MyComponent) as MyComponent).value = "TEST";
+    //expect((entity.getComponent(MyComponent) as MyComponent).value).toEqual( "TEST");
   });
+  */
 });

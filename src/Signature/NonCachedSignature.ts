@@ -7,10 +7,12 @@ import { AbstractSignature } from "./AbstractSignature";
  * You can use this instead.
  * @private
  */
-export class NonCachedSignature extends AbstractSignature {
-  entities: readonly IEntity[];
+export class NonCachedSignature<
+  TEntity extends IEntity
+> extends AbstractSignature<TEntity> {
+  entities: readonly TEntity[];
 
-  listEntities(): ReadonlyArray<IEntity> {
-    return this.engine.listEntities().filter(this.includesEntity);
+  listEntities(): ReadonlyArray<TEntity> {
+    return this.engine.listEntities().filter(this.includesEntity) as TEntity[];
   }
 }

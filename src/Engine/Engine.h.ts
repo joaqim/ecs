@@ -1,21 +1,17 @@
 import type { ISystem } from "../System";
-import type { IEntity } from "../Entity";
+import type { IEntity } from "../Entity.h";
 
 export interface IEngineEntityListener {
   onEntityAdded(entity: IEntity): void;
   onEntityRemoved(entity: IEntity): void;
 }
 
-export type EntityMap = {
-  /** Public array containing the current list of added entities. */
-  entities: IEntity[];
-  /** Public list of entity listeners */
-  listeners: IEngineEntityListener[];
-};
-
 export interface IEngine {
+  entities: IEntity[];
+  entityListeners: IEngineEntityListener[];
+
   systems: ISystem[];
-  entityMap: EntityMap;
+  systemsNeedSorting: boolean;
 
   awake(): IEngine;
   update(delta: number): any;

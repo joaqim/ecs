@@ -1,14 +1,17 @@
-import { BaseConstructorPayload } from "@joaqim/primed-model";
-
 // eslint-disable-next-line
-export interface IComponent {}
+import { ComponentConfig } from "./Component";
 
-export interface IComponentClass<T extends IComponent, U = undefined> {
-  readonly tag: string;
-  new (payload?: BaseConstructorPayload<T, U>): T;
+export interface IComponent {
+  type?: any;
+  tag?: string;
+  //  [key: string]: any;
 }
 
-export type ComponentMap = {
-  [tag: string]: IComponent;
-  classes: { [tag: string]: IComponentClass<IComponent> };
-};
+export type ComponentType = Function;
+
+// export interface IComponentClass<T> {
+//   readonly tag: string;
+//   new (payload?: ComponentConfig<T>): T;
+// }
+
+// export type Component = Function;

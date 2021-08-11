@@ -1,16 +1,15 @@
 import type { IEngine, IEngineEntityListener } from "./Engine.h";
 import { Entity, IEntity } from "../Entity";
-import { Base, Model } from "@joaqim/primed-model";
 import { ISignature, SignatureBuilder } from "../Signature";
 import { System } from "../System";
 import { Engine } from "./Engine";
+import { Component } from "../Component";
 
 class MockSystem extends System {
   update(engine: IEngine, delta: number): void {}
 }
 
-@Model("LogComponent")
-class LogComponent extends Base<LogComponent> {}
+class LogComponent extends Component({}) {}
 
 class LogEntityListener implements IEngineEntityListener {
   onEntityAdded(_entity: IEntity): void {
@@ -35,11 +34,7 @@ class LogEntitySystem extends System {
   }
 }
 
-@Model("BoxComponent")
-class BoxComponent extends Base<BoxComponent> {
-  x: number;
-  y: number;
-}
+class BoxComponent extends Component({ x: 0, y: 0 }) {}
 
 class RenderSystem extends System {
   signature: ISignature;

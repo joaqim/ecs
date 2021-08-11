@@ -1,28 +1,6 @@
-import {
-  Base,
-  BaseConstructorPayload,
-  Model,
-  Primed,
-} from "@joaqim/primed-model";
-import type { EntityMap, IEngine, IEngineEntityListener } from "./Engine.h";
+import type { IEngine, IEngineEntityListener } from "./Engine.h";
 import type { ISystem } from "../System";
-import type { IEntity } from "../Entity";
-import { PrimedSystems } from "../System/System";
-
-export const PrimedEntityMap = (entityMap: EntityMap): EntityMap => {
-  if (entityMap?.entities !== null && entityMap?.entities !== undefined) {
-    if (entityMap !== null && entityMap.listeners !== undefined) {
-      entityMap.listeners.forEach((listener: IEngineEntityListener) =>
-        entityMap.entities.forEach((entity: IEntity) =>
-          listener.onEntityAdded(entity)
-        )
-      );
-      return entityMap;
-    }
-    return <EntityMap>{ entities: entityMap.entities, listeners: [] };
-  }
-  return <EntityMap>{ entities: [], listeners: [] };
-};
+import type { IEntity } from "../Entity.h";
 
 /**
  * An engine is the class than combines systems and entities.
@@ -30,23 +8,19 @@ export const PrimedEntityMap = (entityMap: EntityMap): EntityMap => {
  * you want.
  */
 
-@Model
-export class Engine extends Base<Engine> implements IEngine {
+export class Engine implements IEngine {
   /** Public array containing the current list of added entities. */
   // @Primed(Entity, { array: true })
-  // public _entities!: Entity[];
-  /** Public list of entity listeners */
-  // public _entityListeners: IEngineEntityListener[] = [];
+  public entities: IEntity[];
 
-  @Primed(PrimedEntityMap)
-  public entityMap: EntityMap;
+  /** Public list of entity listeners */
+  public entityListeners: IEngineEntityListener[] = [];
 
   /** Public list of added systems. */
-  @Primed(PrimedSystems, { array: true })
-  public systems!: ISystem[];
+  public systems: ISystem[];
 
   /** Checks if the system needs sorting of some sort */
-  private systemsNeedSorting = true;
+  public systemsNeedSorting = true;
 
   /**
    * Computes an immutable list of entities added to the engine.
@@ -65,14 +39,6 @@ export class Engine extends Base<Engine> implements IEngine {
   }
 
   /**
-   * @param Engine payload/configuration
-   */
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-  constructor(payload?: BaseConstructorPayload<Engine, undefined>) {
-    super(payload);
-  }
-
-  /**
    * Awakes the systems, necessary to use Engine
    */
   awake(): IEngine {
@@ -80,21 +46,13 @@ export class Engine extends Base<Engine> implements IEngine {
     return this;
   }
 
-  get entities(): IEntity[] {
-    return this.entityMap.entities;
-  }
-
-  set entities(entities: IEntity[]) {
-    this.entityMap.entities = entities;
-  }
-
   /**
    * Adds a listener for when entities are added or removed.
    * @param listener The listener waiting to add
    */
   addEntityListener(listener: IEngineEntityListener) {
-    if (this.entityMap.listeners.indexOf(listener) === -1) {
-      this.entityMap.listeners.push(listener);
+    if (this.entityListeners.indexOf(listener) === -1) {
+      this.entityListeners.push(listener);
     }
   }
 
@@ -103,9 +61,9 @@ export class Engine extends Base<Engine> implements IEngine {
    * @param listener The listener to remove
    */
   removeEntityListener(listener: IEngineEntityListener) {
-    const index = this.entityMap.listeners.indexOf(listener);
+    const index = this.entityListeners.indexOf(listener);
     if (index !== -1) {
-      this.entityMap.listeners.splice(index, 1);
+      this.entityListeners.splice(index, 1);
     }
   }
 
@@ -117,7 +75,7 @@ export class Engine extends Base<Engine> implements IEngine {
   addEntity(entity: IEntity) {
     if (this.entities.indexOf(entity) === -1) {
       this.entities.push(entity);
-      this.entityMap.listeners.forEach((listener: IEngineEntityListener) => {
+      this.entityListeners.forEach((listener: IEngineEntityListener) => {
         listener.onEntityAdded(entity);
       });
     }
@@ -131,7 +89,7 @@ export class Engine extends Base<Engine> implements IEngine {
    */
   addEntities(...entities: IEntity[]) {
     entities.forEach((entity: IEntity) => {
-      this.entityMap.listeners.forEach((listener: IEngineEntityListener) =>
+      this.entityListeners.forEach((listener: IEngineEntityListener) =>
         listener.onEntityAdded(entity)
       );
       this.addEntity(entity);
@@ -148,7 +106,7 @@ export class Engine extends Base<Engine> implements IEngine {
     const index = this.entities.indexOf(entity);
     if (index !== -1) {
       this.entities.splice(index, 1);
-      this.entityMap.listeners.forEach((listener: IEngineEntityListener) =>
+      this.entityListeners.forEach((listener: IEngineEntityListener) =>
         listener.onEntityRemoved(entity)
       );
     }

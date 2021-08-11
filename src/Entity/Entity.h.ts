@@ -1,7 +1,34 @@
-import type { BaseConstructorPayload } from "@joaqim/primed-model";
-import type { ComponentMap, IComponent, IComponentClass } from "../Component.h";
-import type { EntityId } from "./EntityId.h";
+import type { ComponentConfig } from "../Component";
+import type { IComponent } from "../Component.h";
 
+export interface IEntityChangeListener {
+  onEntityChanged(entity: IEntity): void;
+}
+
+export interface IEntity {
+  id?: string;
+  tags?: string[];
+  c: {
+    [key: string]: IComponent;
+  };
+
+  components: any[];
+
+  // listComponents(): ReadonlyArray;
+
+  hasComponent(component: Function): boolean;
+  getComponent(component: Function): any;
+  removeComponent(component: Function): void;
+  addComponent<T extends { readonly [K in keyof object]: any }>(
+    definition: ComponentConfig<T>
+  ): void;
+  // ): ComponentConfig<T>;
+
+  addListener(listener: IEntityChangeListener): void;
+  removeListener(listener: IEntityChangeListener): void;
+}
+
+/*
 export interface IEntity {
   id: EntityId;
   set components(componentMap: ComponentMap);
@@ -20,10 +47,7 @@ export interface IEntity {
     componentClass: IComponentClass<T>
   ): IComponent;
   // getComponentByTag(tag: string): IComponent;
-  putComponent<T extends IComponent>(
-    ComponentCtor: IComponentClass<T>,
-    payload?: BaseConstructorPayload<T>
-  ): IComponent;
+  putComponent<TComponent extends Component>(): Component;
   removeComponent<T extends IComponent>(
     componentClass: IComponentClass<T>
   ): void;
@@ -32,6 +56,4 @@ export interface IEntity {
   removeListener(listener: IEntityChangeListener): void;
 }
 
-export interface IEntityChangeListener {
-  onEntityChanged(entity: IEntity): void;
-}
+*/

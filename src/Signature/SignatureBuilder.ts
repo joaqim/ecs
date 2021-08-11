@@ -1,4 +1,4 @@
-import type { IComponent, IComponentClass } from "../Component.h";
+import type { ComponentType } from "../Component.h";
 import { CachedSignature } from "./CachedSignature";
 import { NonCachedSignature } from "./NonCachedSignature";
 import type { IEngine } from "../Engine";
@@ -13,9 +13,9 @@ export class SignatureBuilder {
 
   private cached: boolean;
 
-  private readonly included: IComponentClass<IComponent>[];
+  private readonly included: ComponentType[];
 
-  private readonly excluded: IComponentClass<IComponent>[];
+  private readonly excluded: ComponentType[];
 
   constructor(engine?: IEngine) {
     this.engine = engine || null;
@@ -29,7 +29,7 @@ export class SignatureBuilder {
    * HAVE this components.
    * @param classes A list of component classes.
    */
-  include(...classes: IComponentClass<IComponent>[]): SignatureBuilder {
+  include(...classes: ComponentType[]): SignatureBuilder {
     this.included.push(...classes);
     return this;
   }
@@ -39,7 +39,7 @@ export class SignatureBuilder {
    * HAVE this components.
    * @param classes A list of component classes.
    */
-  exclude(...classes: IComponentClass<IComponent>[]): SignatureBuilder {
+  exclude(...classes: ComponentType[]): SignatureBuilder {
     this.excluded.push(...classes);
     return this;
   }
@@ -67,7 +67,7 @@ export class SignatureBuilder {
    * Builds the signature, using the information provided.
    * @returns a new signature to retrieve the entities.
    */
-  build(): ISignature {
+  build(): ISignature<TEntity> {
     if (!this.engine) {
       throw new Error("Signature should always belong to an engine.");
     }

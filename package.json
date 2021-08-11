@@ -74,7 +74,6 @@
     "WIP"
   ],
   "dependencies": {
-    "@joaqim/primed-model": "github:joaqim/primed-model",
     "reflect-metadata": "^0.1.13",
     "uuid": "^8.3.2"
   }

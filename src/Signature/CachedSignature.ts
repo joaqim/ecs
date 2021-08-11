@@ -1,4 +1,4 @@
-import type { IComponent, IComponentClass } from "../Component.h";
+import type { ComponentType } from "../Component.h";
 import type { IEngine } from "../Engine";
 import type { IEntity, IEntityChangeListener } from "../Entity";
 import { AbstractSignature } from "./AbstractSignature";
@@ -8,24 +8,24 @@ import { AbstractSignature } from "./AbstractSignature";
  * when an entity changes.
  *
  */
-export class CachedSignature
-  extends AbstractSignature
+export class CachedSignature<TEntity extends IEntity>
+  extends AbstractSignature<TEntity>
   implements IEntityChangeListener
 {
   private needEntityRefresh: boolean;
 
-  entities: IEntity[];
+  entities: TEntity[];
 
   constructor(
     engine: IEngine,
-    include: IComponentClass<IComponent>[],
-    exclude: IComponentClass<IComponent>[]
+    include: ComponentType[],
+    exclude: ComponentType[]
   ) {
     super(engine, include, exclude);
     const allEntities = this.engine.listEntities();
-    this.entities = allEntities.filter(this.includesEntity);
+    this.entities = allEntities.filter(this.includesEntity) as TEntity[];
     this.engine.addEntityListener(this);
-    allEntities.forEach((entity: IEntity) => entity.addListener(this));
+    allEntities.forEach((entity: TEntity) => entity.addListener(this));
 
     this.needEntityRefresh = false;
   }
@@ -38,7 +38,7 @@ export class CachedSignature
     return Object.freeze(this.entities.slice(0));
   }
 
-  onEntityAdded(entity: IEntity) {
+  onEntityAdded(entity: TEntity) {
     const index = this.entities.indexOf(entity);
     if (index === -1) {
       this.entities.push(entity);
@@ -47,7 +47,7 @@ export class CachedSignature
     }
   }
 
-  onEntityRemoved(entity: IEntity) {
+  onEntityRemoved(entity: TEntity) {
     const index = this.entities.indexOf(entity);
     if (index !== -1) {
       const removedEntity = this.entities[index];

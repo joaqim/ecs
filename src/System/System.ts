@@ -1,11 +1,6 @@
 import type { IEngine } from "../Engine";
 import type { ISystem } from "./System.h";
 
-export const PrimedSystems = (systems: ISystem[]): ISystem[] => {
-  if (systems === undefined) return [];
-  return systems;
-};
-
 abstract class System implements ISystem {
   priority: number;
 

@@ -1,64 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
-import {
-  Base,
-  BaseConstructorPayload,
-  Model,
-  Primed,
-} from "@joaqim/primed-model";
-import type { ComponentMap, IComponent, IComponentClass } from "../Component.h";
+import { ComponentConfig } from "../Component";
+import type { ComponentType, IComponent } from "../Component.h";
 import type { IEntity, IEntityChangeListener } from "./Entity.h";
 import type { EntityId } from "./EntityId.h";
-
-export const PrimedEntities = (entities: IEntity[]): IEntity[] => {
-  if (entities === undefined) return [];
-  return entities;
-};
-
-export const PrimedId = (id?: string): EntityId => {
-  if (
-    id === undefined ||
-    (typeof id === "string" && (id === "" || id.toUpperCase() === "UUID"))
-  )
-    return uuidv4().toString();
-  return id;
-};
-
-/**
- * Checks if the component is an instance of the class
- * @param component The component to check
- * @param ComponentCtor The class to cast into
- */
-function componentCast<T extends IComponent>(
-  component: IComponent | undefined | null,
-  ComponentCtor: IComponentClass<T>
-): component is T {
-  return !!(component && component instanceof ComponentCtor);
-}
-
-const PrimedComponentMap = (components?: ComponentMap): ComponentMap => {
-  if (components === undefined) return { classes: {} };
-
-  Object.keys(components).forEach((tag: string) => {
-    if (tag === "classes") return;
-    if (Object.prototype.hasOwnProperty.call(components, tag)) {
-      const ComponentCtor = components.classes[tag];
-      if (ComponentCtor !== undefined) {
-        const newComponent = new ComponentCtor(components[tag]);
-        if (!componentCast(newComponent, ComponentCtor)) {
-          throw new Error("TODO");
-        }
-        // eslint-disable-next-line no-param-reassign
-        components[tag] = newComponent;
-      } else {
-        throw new Error(
-          `Missing "${tag}" in classes: {} of construction of ComponentMap`
-        );
-      }
-    }
-  });
-
-  return components;
-};
 
 /**
  * An Entity is every object you may have on your system.
@@ -70,15 +14,25 @@ const PrimedComponentMap = (components?: ComponentMap): ComponentMap => {
  * will throw when you try to get one when no id is set.
  * This set can be used to persist the entity on a database.
  */
-@Model("Entity")
-export class Entity extends Base<Entity> implements IEntity {
-  @Primed(PrimedId, { required: true })
-  readonly id!: EntityId;
+export class Entity implements IEntity {
+  readonly id: EntityId;
 
   private readonly listeners: IEntityChangeListener[] = [];
 
-  // @Primed(PrimedComponentMap)
-  public componentMap!: ComponentMap;
+  tags?: string[] | undefined;
+
+  c: { [key: string]: IComponent };
+
+  components: any[];
+
+  //  constructor(...args: any[]) {}
+
+  addComponent<T extends {}>(definition: ComponentConfig<T>) {
+    this.c = {
+      ...this.c,
+      [definition.type.name.toLowerCase()]: definition,
+    };
+  }
 
   /**
    * Sets the id of the entity to a new value.
@@ -98,38 +52,12 @@ export class Entity extends Base<Entity> implements IEntity {
     }
      */
 
-  set components(componentMap: ComponentMap) {
-    this.componentMap = componentMap;
-  }
-
-  @Primed(PrimedComponentMap)
-  get components(): ComponentMap {
-    return this.componentMap;
-  }
-
-  map(
-    fn: (
-      key: string
-    ) =>
-      | IComponent
-      | { component: IComponent; type: IComponentClass<IComponent> }
-  ): IComponent[] {
-    return Object.keys(this.components)
-      .filter((key) => key !== "classes")
-      .map((i) => fn(i));
-  }
-
   /**
    * Generates a read only list of components of the entity.
    * @returns a list of all components of the entity.
    */
   listComponents(): ReadonlyArray<IComponent> {
-    return this.map((i: string) => this.components[i]);
-    /*
-           return Object.keys(this.components)
-           .filter((key) => key !=== "classes")
-           .map((i) => this.components[i]);
-         */
+    return Object.freeze(this.components.slice(0));
   }
 
   /**
@@ -140,29 +68,28 @@ export class Entity extends Base<Entity> implements IEntity {
 
   listComponentsWithTypes(): Array<{
     component: IComponent;
-    type: IComponentClass<IComponent>;
+    type: ComponentType;
   }> {
-    return Object.keys(this.components)
-      .filter((key) => key !== "classes")
-      .map((i) => ({
-        component: this.components[i],
-        type: this.components.classes[i],
-      }));
+    return Object.entries(this.c).map(([, comp]) => ({
+      type: comp.type,
+      component: comp,
+    }));
   }
 
   /**
    * Generates a read only list of components of the entity with it's corresponding tags.
    * @returns a list of all components with tags of the entity.
    */
-  listComponentsWithTags(): Array<{ tag: string; component: IComponent }> {
-    return Object.keys(this.components)
-      .filter((key) => key !== "classes")
-      .map((tag) =>
-        Object.freeze({
-          tag,
-          component: this.components[tag],
-        })
-      );
+  listComponentsWithTags(): Array<{
+    component: IComponent;
+    tag: string | undefined;
+  }> {
+    return Object.entries(this.c).map(([, comp]) =>
+      Object.freeze({
+        tag: comp.tag,
+        component: comp,
+      })
+    );
   }
 
   /**
@@ -170,18 +97,11 @@ export class Entity extends Base<Entity> implements IEntity {
    * @throws if the class than exists on the entity with that tag is different than the asked one.
    * @param componentClass The class of the component.
    */
-  hasComponent<T extends IComponent>(
-    componentClass: IComponentClass<T>
-  ): boolean {
-    const { tag } = componentClass;
-    const component = this.components[tag];
-    if (!component) return false;
-    if (!componentCast(component, componentClass)) {
-      throw new Error(
-        `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
-      );
-    }
-    return true;
+  hasComponent(component: Function): boolean {
+    return Object.prototype.hasOwnProperty.call(
+      this.c,
+      component.name.toLowerCase()
+    );
   }
 
   /**
@@ -190,76 +110,15 @@ export class Entity extends Base<Entity> implements IEntity {
    * @throws if the component is not on the entity.
    * @param componentClass The class of the component.
    */
-  getComponent<T extends IComponent>(
-    componentClass: IComponentClass<T>
-  ): IComponent {
-    const { tag } = componentClass;
-    const component = this.components[tag];
-    if (!component) {
-      throw new Error(`Cannot get component "${tag}" from entity.`);
-    }
-    if (!componentCast(component, componentClass)) {
-      throw new Error(
-        `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
-      );
-    }
-    return component;
-  }
-
-  getComponentByTag(tag: string): IComponent {
-    // const tag = //componentClass.tag
-    const component = this.components[tag];
-    const componentClass = this.components.classes[tag];
-    if (!component) {
-      throw new Error(`Cannot get component "${tag}" from entity.`);
-    }
-    if (!componentCast(component, componentClass)) {
-      throw new Error(
-        `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
-      );
-    }
-    return component;
-  }
-
-  /**
-   * Creates a component of the specified class and adds it to the entity.
-   * @throws if the class than exists on the entity with that tag is different than the asked one.
-   * @param componentClass The class of the component.
-   * @returns The newly created component.
-   */
-  putComponent<T extends IComponent>(
-    ComponentCtor: IComponentClass<T>,
-    payload?: BaseConstructorPayload<T>
-  ): IComponent {
-    const { tag } = ComponentCtor;
-    const component = this.components[tag];
-    if (component) {
-      if (tag === "_class" || tag === "Entity") {
-        // TODO: Make this check in Base/Model constructor in Reflect.ts?
-        throw new Error(`Component "${tag}" is not a valid component.`);
-      }
-
-      if (component instanceof ComponentCtor) {
-        throw new Error(`Component "${tag}" is already defined in Entity`);
-      }
-
-      if (!componentCast(component, ComponentCtor)) {
-        throw new Error(
-          `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
-        );
-      }
-      delete this.components[tag];
-      delete this.components.classes[tag];
-    }
-    // eslint-disable-next-line new-cap
-    const newComponent = new ComponentCtor(payload);
-    this.components[tag] = newComponent;
-    this.components.classes[tag] = ComponentCtor;
-    this.listeners.forEach((listener: IEntityChangeListener) =>
-      listener.onEntityChanged(this)
+  getComponent(component: ComponentType): any {
+    const result = Object.entries(this.c).find(
+      (c: any) => c[1].type === component
     );
+    if (!result)
+      throw new Error(`Cannot get component "${component.name}" from entity.`);
+    return result[1];
 
-    return newComponent;
+    // return result ? result[1] : undefined;
   }
 
   /**
@@ -268,20 +127,17 @@ export class Entity extends Base<Entity> implements IEntity {
    * @throws if the class than exists on the entity with that tag is different than the asked one.
    * @param componentClass The class of the component.
    */
-  removeComponent<T extends IComponent>(
-    componentClass: IComponentClass<T>
-  ): void {
-    const { tag } = componentClass;
-    const component = this.components[tag];
-    if (!component) {
-      throw new Error(`Component of tag "${tag}".\nDoes not exists.`);
-    }
-    if (!componentCast(component, componentClass)) {
-      throw new Error(
-        `There are multiple classes with the same tag or name "${tag}".\nAdd a different property "tag" to one of them.`
-      );
-    }
-    delete this.components[tag];
+  removeComponent(component: Function) {
+    const result = Object.entries(this.c).find(
+      (c: any) => c[1].type === component
+    );
+
+    if (!result)
+      throw new Error(`Component "${component.name}".\nDoes not exists.`);
+
+    delete this.c[component.name.toLowerCase()];
+
+    // delete this.components[tag];
     this.listeners.forEach((listener: IEntityChangeListener) =>
       listener.onEntityChanged(this)
     );

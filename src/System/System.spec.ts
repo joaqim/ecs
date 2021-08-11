@@ -1,10 +1,9 @@
 import { Engine, IEngine } from "../Engine";
 import { ISignature, SignatureBuilder } from "../Signature";
 import { System } from "../System";
+import { Position } from "../Component.mock";
 
-class MySystem extends System {
-  public signature: ISignature | null = null;
-
+class MySystem extends System({ Position }) {
   onAttach(engine: IEngine) {
     super.onAttach(engine);
     this.signature = new SignatureBuilder(engine).build();
