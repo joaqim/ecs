@@ -21,6 +21,14 @@ export function createEntity<T extends { readonly [K in keyof object]: any }>(
   return definition;
 }
 
+export function CreateEntityClass<
+  T extends { readonly [K in keyof object]: any }
+>(definition: EntityConfig<T>): any {
+  return class extends BaseEntity<EntityConfig<T>> {
+    type: EntityConfig<T>;
+  };
+}
+
 type Constructor<T> = { new (...args: any[]): T };
 export function Entity<TProperties extends {}>(
   properties?: TProperties

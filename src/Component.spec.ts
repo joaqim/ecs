@@ -1,6 +1,6 @@
 import type { IComponent } from "./Component.h";
 import { ComponentConfig } from "./Component";
-import { createEntity } from "./Entity";
+import { createEntity, CreateEntityClass } from "./Entity";
 import {
   BaseSystem,
   Flag,
@@ -46,14 +46,22 @@ function addComponent<T extends { readonly [K in keyof object]: any }>(
 export function toInstanceOfMyClassOf<T>() {
   type MyEntity = EntityConfig<T>;
 
-  return new (class {
-    public entities: MyEntity[];
+  return class {
+    public entities: MyEntity[] = [];
     public entity: MyEntity;
     public listEntities(): MyEntity[] {
       return this.entities;
     }
-  })();
+  };
 }
+
+class SystemInstance extends toInstanceOfMyClassOf<{ flag: Flag }>() {
+  init() {
+    console.log(this);
+  }
+}
+
+class EntityClass extends CreateEntityClass({ c: { flag: { type: Flag } } }) {}
 
 describe(">>> TypedComponent", () => {
   let entity: EntityConfig<{
@@ -67,6 +75,13 @@ describe(">>> TypedComponent", () => {
 
   let flag: IComponent = new Flag({});
 
+  let ie: IEntity;
+
+  it("", () => {
+    type Ent = EntityConfig<{ flag: Flag }>;
+    let e = new EntityClass();
+    console.log(e);
+  });
   it("", () => {
     entity = createEntity({
       id: "id",

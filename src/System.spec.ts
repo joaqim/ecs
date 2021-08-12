@@ -44,4 +44,15 @@ function createSystem<T extends { readonly [K in keyof object]: any }>(
   definition: SystemConfig<T>
 ): any {}
 
+export function CreateSystem<T extends { readonly [K in keyof object]: any }>(
+  definition: SystemConfig<T>
+): any {
+  type Conf = SystemConfig<T>;
+  return class extends BaseSystem<SystemConfig<T>> {};
+}
+
+describe("", () => {
+  it("", () => {});
+});
+
 //class RenderSystem extends System(EntityConfig<{ position: Position }>) { }
