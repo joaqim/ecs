@@ -13,7 +13,7 @@ export class SignatureBuilder<TProperties extends {} = {}> {
 
   private cached: boolean;
 
-  private readonly excluded: ComponentType[];
+  private excluded: ComponentType[];
 
   constructor(engine?: IEngine) {
     this.engine = engine || null;
@@ -24,10 +24,10 @@ export class SignatureBuilder<TProperties extends {} = {}> {
   /**
    * Indicates than entities than are members of this class MUST NOT
    * HAVE this components.
-   * @param classes A list of component classes.
+   * @param components A list of component classes.
    */
-  exclude(...classes: ComponentType[]): SignatureBuilder {
-    this.excluded.push(...classes);
+  exclude(components: ComponentType[]): SignatureBuilder {
+    this.excluded = [...this.excluded, ...components];
     return this;
   }
 

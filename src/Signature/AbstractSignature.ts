@@ -16,9 +16,9 @@ export abstract class AbstractSignature<
 {
   readonly engine: IEngine;
 
-  private readonly excluded: ReadonlyArray<ComponentType>;
+  private readonly excluded: ReadonlyArray<ComponentType> = [];
 
-  constructor(engine: IEngine, excluded: ComponentType[]) {
+  constructor(engine: IEngine, excluded: ComponentType[] = []) {
     this.engine = engine;
     this.excluded = Object.freeze(excluded.slice(0));
   }
@@ -27,20 +27,16 @@ export abstract class AbstractSignature<
     return this.engine.listEntities().filter(this.includesEntity) as TEntity[];
   }
 
-  includesEntity(entity: IEntity): boolean {
+  includesEntity = (entity: IEntity): boolean => {
     return (
-      (!this.excluded.some(
-        (exclude: ComponentType) =>
-          Object.prototype.hasOwnProperty.call(entity.c, exclude) // TODO: Benchmark which is better
-        /*
+      (!this.excluded.some((exclude: ComponentType) =>
         isOfType<{ [key: string]: ComponentType }>(
           entity.c,
           exclude.name.toLowerCase()
         )
-        */
       ) &&
         isOfType<TEntity>(entity, "c")) ||
       false
     );
-  }
+  };
 }

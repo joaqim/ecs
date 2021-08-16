@@ -16,9 +16,9 @@ export class CachedSignature<
   // implements IEntityChangeListener
   private needEntityRefresh: boolean;
 
-  entities: TEntity[];
+  entities: TEntity[] = [];
 
-  constructor(engine: IEngine, exclude: ComponentType[]) {
+  constructor(engine: IEngine, exclude: ComponentType[] = []) {
     super(engine, exclude);
     const allEntities = this.engine.listEntities();
     this.entities = allEntities.filter(this.includesEntity) as TEntity[];
@@ -45,11 +45,17 @@ export class CachedSignature<
     }
   }
 
-  onEntityRemoved(entity: IEntity) {
-    const index = this.entities.indexOf(entity as TEntity);
+  onEntityRemoved(entity: TEntity) {
+    const index = this.entities.indexOf(entity);
     if (index !== -1) {
-      // const removedEntity = this.entities[index] as IEntity;
+      const removedEntity = this.entities[index] as IEntity;
       this.entities.splice(index, 1);
+      if (removedEntity.listeners) {
+        for (let listener of removedEntity.listeners) {
+          listener.onEntityChanged(removedEntity);
+        }
+      }
+
       // removedEntity.removeListener(this);
     }
   }

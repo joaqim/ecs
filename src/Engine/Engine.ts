@@ -10,8 +10,7 @@ import type { IEntity } from "../Entity.h";
 
 export class Engine implements IEngine {
   /** Public array containing the current list of added entities. */
-  // @Primed(Entity, { array: true })
-  public entities: IEntity[];
+  public entities: IEntity[] = [];
 
   /** Public list of entity listeners */
   public entityListeners: IEngineEntityListener[] = [];

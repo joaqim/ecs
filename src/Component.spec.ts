@@ -1,6 +1,10 @@
 import type { IComponent } from "./Component.h";
 import { ComponentConfig } from "./Component";
-import { createEntity, CreateEntityClass } from "./Entity";
+import {
+  createEntity,
+  CreateEntityClass,
+  createEntityWithConfig,
+} from "./Entity";
 import {
   BaseSystem,
   Flag,
@@ -75,6 +79,9 @@ describe(">>> TypedComponent", () => {
 
   let ie: IEntity;
 
+  it("", () => {
+    console.log(createEntityWithConfig({ c: { flag: { type: Flag } } }));
+  });
   it("", () => {
     type Ent = EntityConfig<{ flag: Flag }>;
     let e: Ent = { c: { flag: { type: Flag } } };

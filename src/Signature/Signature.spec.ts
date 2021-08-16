@@ -6,6 +6,8 @@ import { BaseSystem, Flag, Velocity } from "../Component.mock";
 import { ComponentType } from "../Component.h";
 import { createEntity, createEntityWithConfig, Entity } from "../Entity";
 import { ISignature } from "./Signature.h";
+import { SignatureBuilder } from "./SignatureBuilder";
+import { CachedSignature } from "./CachedSignature";
 
 class MyComponent extends Component({ value: "" }) {}
 class MyOtherComponent extends Component({}) {}
@@ -13,60 +15,30 @@ class AnotherFlag extends Component({}) {}
 
 type MyEntityType = EntityConfig<{ mc: MyComponent }>;
 
-export class BaseSignature<TProperties extends {} = {}> implements ISignature {
-  properties: TProperties;
-  //type TEntity = EntityConfig<TProperties>
-  // Tests:
-  engineEntities: IEntity[];
-  entities: EntityConfig<TProperties>[] = [];
-
-  engine: IEngine;
-
-  included: ComponentType[];
-  excluded: ComponentType[] = [];
-
-  constructor(engine: IEngine, exclude: ComponentType[]) {
-    this.engine = engine;
-    this.excluded = exclude;
-  }
-
-  includesEntity(entity: IEntity, component: ComponentType): boolean {
-    return isOfType<{ [key: string]: ComponentType }>(
-      entity.c,
-      component.name.toLowerCase()
-    );
-  }
-
-  listEntities(): EntityConfig<TProperties>[] {
-    return this.engineEntities.filter(
-      (entity: IEntity) =>
-        (!this.excluded.some((exclude: Function) =>
-          this.includesEntity(entity, exclude)
-        ) &&
-          this.included.every((include: Function) =>
-            this.includesEntity(entity, include)
-          )) ||
-        false
-    ) as EntityConfig<TProperties>[];
-  }
-}
-
-//type Constructor<T> = { new (...args: any[]): T };
-function Signature<TInclude extends {} = {}>(
-  engine: IEngine,
-  exclude: ComponentType[]
-) {
-  return new BaseSignature<TInclude>(engine, exclude);
-}
-
+type FlagEntity = { flag: Flag };
 describe("Signatures work", function () {
   it("", () => {});
   it("", () => {
     let engine = new Engine();
-    let entity = createEntity({
+    let flagEntity = createEntity({
       c: { flag: { type: Flag } },
     });
+    let velEntity = createEntity({
+      c: { flag: { type: Flag }, velocity: { type: Velocity, dx: 0, dy: 0 } },
+    });
 
+    engine.addEntity(flagEntity);
+    engine.addEntity(velEntity);
+    let signature = new SignatureBuilder<FlagEntity>(engine)
+      .exclude([Velocity])
+      .build();
+
+    let entities = signature.listEntities();
+    expect(entities).toHaveLength(1);
+    expect(entities[0]).toBe(flagEntity);
+    expect(engine.listEntities()).toHaveLength(2);
+
+    /*
     let s = new BaseSignature<{ flag: Flag }>(engine, [Velocity]);
     expect(s.excluded).toEqual([Velocity]);
 
@@ -102,6 +74,7 @@ describe("Signatures work", function () {
     let anotherFlagEntity: EntityAnotherFlagType = createEntity({
       c: { flag: { type: AnotherFlag } },
     });
+    */
   });
   /*
   it("Empty signature returns all entities", function () {
