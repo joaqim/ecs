@@ -1,6 +1,7 @@
 import type { ComponentType } from "../Component.h";
 import type { IEngine } from "../Engine";
-import type { IEntity, IEntityChangeListener } from "../Entity";
+import type { IEntity } from "../Entity.h";
+import { EntityConfig } from "../Entity.h";
 import { AbstractSignature } from "./AbstractSignature";
 
 /**
@@ -8,24 +9,21 @@ import { AbstractSignature } from "./AbstractSignature";
  * when an entity changes.
  *
  */
-export class CachedSignature<TEntity extends IEntity>
-  extends AbstractSignature<TEntity>
-  implements IEntityChangeListener
-{
+export class CachedSignature<
+  TProperties extends {} = {},
+  TEntity extends IEntity = EntityConfig<TProperties>
+> extends AbstractSignature<TProperties, TEntity> {
+  // implements IEntityChangeListener
   private needEntityRefresh: boolean;
 
   entities: TEntity[];
 
-  constructor(
-    engine: IEngine,
-    include: ComponentType[],
-    exclude: ComponentType[]
-  ) {
-    super(engine, include, exclude);
+  constructor(engine: IEngine, exclude: ComponentType[]) {
+    super(engine, exclude);
     const allEntities = this.engine.listEntities();
     this.entities = allEntities.filter(this.includesEntity) as TEntity[];
-    this.engine.addEntityListener(this);
-    allEntities.forEach((entity: TEntity) => entity.addListener(this));
+    // this.engine.addEntityListener(this);
+    // allEntities.forEach((entity: IEntity) => entity.addListener(this));
 
     this.needEntityRefresh = false;
   }
@@ -38,21 +36,21 @@ export class CachedSignature<TEntity extends IEntity>
     return Object.freeze(this.entities.slice(0));
   }
 
-  onEntityAdded(entity: TEntity) {
-    const index = this.entities.indexOf(entity);
+  onEntityAdded(entity: IEntity) {
+    const index = this.entities.indexOf(entity as unknown as TEntity);
     if (index === -1) {
-      this.entities.push(entity);
+      this.entities.push(entity as TEntity);
       this.needEntityRefresh = true;
-      entity.addListener(this);
+      // entity.addListener(this);
     }
   }
 
-  onEntityRemoved(entity: TEntity) {
-    const index = this.entities.indexOf(entity);
+  onEntityRemoved(entity: IEntity) {
+    const index = this.entities.indexOf(entity as TEntity);
     if (index !== -1) {
-      const removedEntity = this.entities[index];
+      // const removedEntity = this.entities[index] as IEntity;
       this.entities.splice(index, 1);
-      removedEntity.removeListener(this);
+      // removedEntity.removeListener(this);
     }
   }
 

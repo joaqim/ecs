@@ -8,30 +8,17 @@ import type { ISignature } from "./Signature.h";
  * Utility class to build Signatures.
  * It's the only way to create the implementations of CachedSignature and NonCachedSignature.
  */
-export class SignatureBuilder {
+export class SignatureBuilder<TProperties extends {} = {}> {
   private engine: IEngine | null;
 
   private cached: boolean;
-
-  private readonly included: ComponentType[];
 
   private readonly excluded: ComponentType[];
 
   constructor(engine?: IEngine) {
     this.engine = engine || null;
-    this.included = [];
     this.excluded = [];
     this.cached = true;
-  }
-
-  /**
-   * Indicates than entities than are members of this class MUST
-   * HAVE this components.
-   * @param classes A list of component classes.
-   */
-  include(...classes: ComponentType[]): SignatureBuilder {
-    this.included.push(...classes);
-    return this;
   }
 
   /**
@@ -67,13 +54,13 @@ export class SignatureBuilder {
    * Builds the signature, using the information provided.
    * @returns a new signature to retrieve the entities.
    */
-  build(): ISignature<TEntity> {
+  build(): ISignature<TProperties> {
     if (!this.engine) {
       throw new Error("Signature should always belong to an engine.");
     }
     if (!this.cached) {
-      return new NonCachedSignature(this.engine, this.included, this.excluded);
+      return new NonCachedSignature<TProperties>(this.engine, this.excluded);
     }
-    return new CachedSignature(this.engine, this.included, this.excluded);
+    return new CachedSignature<TProperties>(this.engine, this.excluded);
   }
 }

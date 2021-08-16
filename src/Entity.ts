@@ -6,6 +6,7 @@ export class BaseEntity<TProperties extends {} = {}> implements IEntity {
 
   tags?: string[] | undefined;
 
+  // c: { [key: string]: any };
   c: { [key: string]: any };
 
   properties: TProperties;
@@ -18,6 +19,12 @@ export function createEntityTypesafe<
 export function createEntity<T extends { readonly [K in keyof object]: any }>(
   definition: EntityConfig<T>
 ): any {
+  return definition;
+}
+
+export function createEntityWithConfig<
+  T extends { readonly [K in keyof object]: any }
+>(definition: EntityConfig<T>): any {
   return definition;
 }
 

@@ -1,29 +1,107 @@
-import { CachedSignature, SignatureBuilder } from "../Signature";
-import { Engine } from "../Engine";
-import { Component } from "../Component";
-import { EntityConfig } from "../Entity.h";
+import { Engine, IEngine } from "../Engine";
+import { Component, ComponentConfig } from "../Component";
+import { EntityConfig, IEntity } from "../Entity.h";
+import { isOfType } from "../utils/isOfType";
+import { BaseSystem, Flag, Velocity } from "../Component.mock";
+import { ComponentType } from "../Component.h";
+import { createEntity, createEntityWithConfig, Entity } from "../Entity";
+import { ISignature } from "./Signature.h";
 
 class MyComponent extends Component({ value: "" }) {}
 class MyOtherComponent extends Component({}) {}
+class AnotherFlag extends Component({}) {}
 
 type MyEntityType = EntityConfig<{ mc: MyComponent }>;
-class MyEntity extends Entity({ mc: MyComponent }) {}
 
-export class BaseSignature<T> {}
+export class BaseSignature<TProperties extends {} = {}> implements ISignature {
+  properties: TProperties;
+  //type TEntity = EntityConfig<TProperties>
+  // Tests:
+  engineEntities: IEntity[];
+  entities: EntityConfig<TProperties>[] = [];
+
+  engine: IEngine;
+
+  included: ComponentType[];
+  excluded: ComponentType[] = [];
+
+  constructor(engine: IEngine, exclude: ComponentType[]) {
+    this.engine = engine;
+    this.excluded = exclude;
+  }
+
+  includesEntity(entity: IEntity, component: ComponentType): boolean {
+    return isOfType<{ [key: string]: ComponentType }>(
+      entity.c,
+      component.name.toLowerCase()
+    );
+  }
+
+  listEntities(): EntityConfig<TProperties>[] {
+    return this.engineEntities.filter(
+      (entity: IEntity) =>
+        (!this.excluded.some((exclude: Function) =>
+          this.includesEntity(entity, exclude)
+        ) &&
+          this.included.every((include: Function) =>
+            this.includesEntity(entity, include)
+          )) ||
+        false
+    ) as EntityConfig<TProperties>[];
+  }
+}
+
+//type Constructor<T> = { new (...args: any[]): T };
+function Signature<TInclude extends {} = {}>(
+  engine: IEngine,
+  exclude: ComponentType[]
+) {
+  return new BaseSignature<TInclude>(engine, exclude);
+}
 
 describe("Signatures work", function () {
+  it("", () => {});
   it("", () => {
     let engine = new Engine();
-    let entity = new MyEntity({ c: {} });
-    /*
-    let sig1 = new CachedSignature<MyEntity>(
-      engine,
-      [MyComponent],
-      [MyOtherComponent]
-    );
-    */
+    let entity = createEntity({
+      c: { flag: { type: Flag } },
+    });
 
-    let e: MyEntity;
+    let s = new BaseSignature<{ flag: Flag }>(engine, [Velocity]);
+    expect(s.excluded).toEqual([Velocity]);
+
+    s.engineEntities = [
+      { c: { flag: { type: Flag } } },
+      {
+        c: { flag: { type: Flag }, velocity: { type: Velocity, dx: 0, dy: 0 } },
+      },
+      { c: { velocity: { type: Velocity, dx: 0, dy: 0 } } },
+    ];
+    s.included = [Flag];
+
+    s.excluded = [];
+    expect(s.listEntities()).toHaveLength(2);
+    s.excluded = [Velocity];
+    expect(s.listEntities()).toHaveLength(1);
+
+    s.entities = [
+      { c: { flag: { type: Flag } } },
+      { c: { flag: { type: AnotherFlag } } },
+    ];
+    console.log(...s.entities);
+    expect(
+      isOfType<{ [key: string]: ComponentType }>(entity.c, "flag")
+    ).toBeTruthy();
+
+    type EntityFlagType = EntityConfig<{ flag: Flag }>;
+    type EntityAnotherFlagType = EntityConfig<{ fag: AnotherFlag }>;
+
+    let flagEntity: EntityFlagType = createEntity({
+      c: { flag: { type: Flag } },
+    });
+    let anotherFlagEntity: EntityAnotherFlagType = createEntity({
+      c: { flag: { type: AnotherFlag } },
+    });
   });
   /*
   it("Empty signature returns all entities", function () {

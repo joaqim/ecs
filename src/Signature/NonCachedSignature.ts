@@ -1,4 +1,4 @@
-import type { IEntity } from "../Entity";
+import { EntityConfig, IEntity } from "../Entity.h";
 import { AbstractSignature } from "./AbstractSignature";
 
 /**
@@ -8,8 +8,9 @@ import { AbstractSignature } from "./AbstractSignature";
  * @private
  */
 export class NonCachedSignature<
-  TEntity extends IEntity
-> extends AbstractSignature<TEntity> {
+  TProperties extends {} = {},
+  TEntity extends IEntity = EntityConfig<TProperties>
+> extends AbstractSignature<TProperties, TEntity> {
   entities: readonly TEntity[];
 
   listEntities(): ReadonlyArray<TEntity> {

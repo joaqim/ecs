@@ -4,7 +4,7 @@ export class BaseEntity<TProperties extends {} = {}> {
   properties: TProperties;
 }
 
-export interface IEntity extends BaseEntity {
+export interface IEntity {
   id?: string;
   tags?: string[];
   c: {

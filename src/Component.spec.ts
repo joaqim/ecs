@@ -61,8 +61,6 @@ class SystemInstance extends toInstanceOfMyClassOf<{ flag: Flag }>() {
   }
 }
 
-class EntityClass extends CreateEntityClass({ c: { flag: { type: Flag } } }) {}
-
 describe(">>> TypedComponent", () => {
   let entity: EntityConfig<{
     flag: Flag;
@@ -79,8 +77,9 @@ describe(">>> TypedComponent", () => {
 
   it("", () => {
     type Ent = EntityConfig<{ flag: Flag }>;
-    let e = new EntityClass();
-    console.log(e);
+    let e: Ent = { c: { flag: { type: Flag } } };
+    let sys = new SystemInstance();
+    sys.entities = [{ c: { flag: { type: Flag } } }];
   });
   it("", () => {
     entity = createEntity({

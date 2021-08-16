@@ -1,6 +1,7 @@
-import type { ComponentType } from "../Component.h";
+import { ComponentType } from "../Component.h";
 import type { IEngine } from "../Engine";
-import type { IEntity } from "../Entity.h";
+import type { EntityConfig, IEntity } from "../Entity.h";
+import { isOfType } from "../utils/isOfType";
 import type { ISignature } from "./Signature.h";
 
 /**
@@ -8,22 +9,17 @@ import type { ISignature } from "./Signature.h";
  * This class is private to this module.
  * @private
  */
-export abstract class AbstractSignature<TEntity extends IEntity>
-  implements ISignature<TEntity>
+export abstract class AbstractSignature<
+  TProperties extends {} = {},
+  TEntity extends IEntity = EntityConfig<TProperties>
+> implements ISignature<TProperties, TEntity>
 {
   readonly engine: IEngine;
 
-  private readonly included: ReadonlyArray<ComponentType>;
-
   private readonly excluded: ReadonlyArray<ComponentType>;
 
-  constructor(
-    engine: IEngine,
-    included: ComponentType[],
-    excluded: ComponentType[]
-  ) {
+  constructor(engine: IEngine, excluded: ComponentType[]) {
     this.engine = engine;
-    this.included = Object.freeze(included.slice(0));
     this.excluded = Object.freeze(excluded.slice(0));
   }
 
@@ -31,20 +27,19 @@ export abstract class AbstractSignature<TEntity extends IEntity>
     return this.engine.listEntities().filter(this.includesEntity) as TEntity[];
   }
 
-  includesEntity(entity: TEntity): boolean {
+  includesEntity(entity: IEntity): boolean {
     return (
-      (!this.excluded.some((exclude: Function) =>
-        Object.prototype.hasOwnProperty.call(
+      (!this.excluded.some(
+        (exclude: ComponentType) =>
+          Object.prototype.hasOwnProperty.call(entity.c, exclude) // TODO: Benchmark which is better
+        /*
+        isOfType<{ [key: string]: ComponentType }>(
           entity.c,
           exclude.name.toLowerCase()
         )
+        */
       ) &&
-        this.included.every((include: Function) =>
-          Object.prototype.hasOwnProperty.call(
-            entity.c,
-            include.name.toLowerCase()
-          )
-        )) ||
+        isOfType<TEntity>(entity, "c")) ||
       false
     );
   }
