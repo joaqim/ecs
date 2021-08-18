@@ -9,6 +9,6 @@ export interface ISignature<
    * Computes a list of entities on the signature.
    * The list may or may not be cached, depending of implementation.
    */
-  includesEntity(entity: IEntity, compnent: ComponentType): boolean;
+  includesEntity(entity: IEntity, component: ComponentType): boolean;
   listEntities(): ReadonlyArray<TEntity>;
 }

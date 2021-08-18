@@ -22,9 +22,12 @@ export function createEntity<T extends { readonly [K in keyof object]: any }>(
   return definition;
 }
 
+type Constructor<T> = { new (...args: any[]): T };
 export function createEntityWithConfig<
-  T extends { readonly [K in keyof object]: any }
->(definition: EntityConfig<T>): any {
+  T extends { readonly [K in keyof object]: any },
+  TEntity = EntityConfig<T>
+>(definition: BaseEntity<TEntity>): BaseEntity<TEntity> {
+  //let EntityCtor = class extends BaseEntity<TEntity> {};
   return definition;
 }
 
@@ -36,7 +39,6 @@ export function CreateEntityClass<
   };
 }
 
-type Constructor<T> = { new (...args: any[]): T };
 export function Entity<TProperties extends {}>(
   properties?: TProperties
 ): Constructor<BaseEntity<TProperties>> &

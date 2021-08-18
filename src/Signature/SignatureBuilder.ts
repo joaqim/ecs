@@ -3,6 +3,8 @@ import { CachedSignature } from "./CachedSignature";
 import { NonCachedSignature } from "./NonCachedSignature";
 import type { IEngine } from "../Engine";
 import type { ISignature } from "./Signature.h";
+import { EntityConfig, IEntity } from "../Entity.h";
+import { ComponentConfig } from "../Component";
 
 /**
  * Utility class to build Signatures.
@@ -13,21 +15,34 @@ export class SignatureBuilder<TProperties extends {} = {}> {
 
   private cached: boolean;
 
-  private readonly excluded: ComponentType[];
+  private excluded: ComponentType[];
 
-  constructor(engine?: IEngine) {
+  private included: string[];
+
+  constructor(
+    engine: IEngine,
+    match: ComponentType[],
+    ...exclude: ComponentType[]
+  ) {
     this.engine = engine || null;
-    this.excluded = [];
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    this.included = Object.entries(match).map(([_, value]) =>
+      value.name.toLowerCase()
+    );
+    // this.included = Object.keys(match).map((key) => key);
+
+    this.excluded = exclude;
+
     this.cached = true;
   }
 
   /**
    * Indicates than entities than are members of this class MUST NOT
    * HAVE this components.
-   * @param classes A list of component classes.
+   * @param components A list of component classes.
    */
-  exclude(...classes: ComponentType[]): SignatureBuilder {
-    this.excluded.push(...classes);
+  exclude(...components: ComponentType[]): SignatureBuilder {
+    this.excluded = [...this.excluded, ...components];
     return this;
   }
 
@@ -46,8 +61,9 @@ export class SignatureBuilder<TProperties extends {} = {}> {
    * Changes if the signature should use cached values or not.
    * @param cached If the signature must use or not a cache.
    */
-  setCached(cached: boolean): void {
+  setCached(cached: boolean): SignatureBuilder {
     this.cached = cached;
+    return this;
   }
 
   /**
@@ -59,8 +75,16 @@ export class SignatureBuilder<TProperties extends {} = {}> {
       throw new Error("Signature should always belong to an engine.");
     }
     if (!this.cached) {
-      return new NonCachedSignature<TProperties>(this.engine, this.excluded);
+      return new NonCachedSignature<TProperties>(
+        this.engine,
+        this.included,
+        ...this.excluded
+      );
     }
-    return new CachedSignature<TProperties>(this.engine, this.excluded);
+    return new CachedSignature<TProperties>(
+      this.engine,
+      this.included,
+      ...this.excluded
+    );
   }
 }

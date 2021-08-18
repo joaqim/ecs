@@ -1,7 +1,6 @@
 import { ComponentType } from "../Component.h";
 import type { IEngine } from "../Engine";
 import type { EntityConfig, IEntity } from "../Entity.h";
-import { isOfType } from "../utils/isOfType";
 import type { ISignature } from "./Signature.h";
 
 /**
@@ -16,10 +15,17 @@ export abstract class AbstractSignature<
 {
   readonly engine: IEngine;
 
-  private readonly excluded: ReadonlyArray<ComponentType>;
+  private readonly excluded: ReadonlyArray<ComponentType> = [];
 
-  constructor(engine: IEngine, excluded: ComponentType[]) {
+  private readonly included: string[];
+
+  constructor(
+    engine: IEngine,
+    included: string[],
+    ...excluded: ComponentType[]
+  ) {
     this.engine = engine;
+    this.included = included;
     this.excluded = Object.freeze(excluded.slice(0));
   }
 
@@ -28,16 +34,17 @@ export abstract class AbstractSignature<
   }
 
   includesEntity = (entity: IEntity) =>
-    (!this.excluded.some(
+    !this.excluded.some(
       (exclude: ComponentType) =>
         entity.c[exclude.name.toLowerCase()] !== undefined
-      /*
-      isOfType<{ [key: string]: ComponentType }>(
-        entity.c,
-        exclude.name.toLowerCase()
-      )
-      */
-    ) &&
-      isOfType<TEntity>(entity, "c")) ||
-    false;
+      // isOfType<{ [key: string]: ComponentType }>(
+      //   entity.c,
+      //   exclude.name.toLowerCase()
+      // )
+    ) && this.included.every((include: string) => !!entity.c[include]);
+  // isOfType<{ [key: string]: ComponentType }>(
+  //   entity.c,
+  //   exclude.name.toLowerCase()
+  // )
+  // isOfType<TEntity>(entity, "c");
 }
