@@ -27,20 +27,17 @@ export abstract class AbstractSignature<
     return this.engine.listEntities().filter(this.includesEntity) as TEntity[];
   }
 
-  includesEntity(entity: IEntity): boolean {
-    return (
-      (!this.excluded.some(
-        (exclude: ComponentType) =>
-          Object.prototype.hasOwnProperty.call(entity.c, exclude) // TODO: Benchmark which is better
-        /*
-        isOfType<{ [key: string]: ComponentType }>(
-          entity.c,
-          exclude.name.toLowerCase()
-        )
-        */
-      ) &&
-        isOfType<TEntity>(entity, "c")) ||
-      false
-    );
-  }
+  includesEntity = (entity: IEntity) =>
+    (!this.excluded.some(
+      (exclude: ComponentType) =>
+        entity.c[exclude.name.toLowerCase()] !== undefined
+      /*
+      isOfType<{ [key: string]: ComponentType }>(
+        entity.c,
+        exclude.name.toLowerCase()
+      )
+      */
+    ) &&
+      isOfType<TEntity>(entity, "c")) ||
+    false;
 }

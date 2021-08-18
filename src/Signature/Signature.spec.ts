@@ -6,6 +6,7 @@ import { BaseSystem, Flag, Velocity } from "../Component.mock";
 import { ComponentType } from "../Component.h";
 import { createEntity, createEntityWithConfig, Entity } from "../Entity";
 import { ISignature } from "./Signature.h";
+import { SignatureBuilder } from ".";
 
 class MyComponent extends Component({ value: "" }) {}
 class MyOtherComponent extends Component({}) {}
@@ -25,7 +26,7 @@ export class BaseSignature<TProperties extends {} = {}> implements ISignature {
   included: ComponentType[];
   excluded: ComponentType[] = [];
 
-  constructor(engine: IEngine, exclude: ComponentType[]) {
+  constructor(engine: IEngine, ...exclude: any[]) {
     this.engine = engine;
     this.excluded = exclude;
   }
@@ -67,7 +68,7 @@ describe("Signatures work", function () {
       c: { flag: { type: Flag } },
     });
 
-    let s = new BaseSignature<{ flag: Flag }>(engine, [Velocity]);
+    let s = new BaseSignature<{ flag: Flag }>(engine, Velocity);
     expect(s.excluded).toEqual([Velocity]);
 
     s.engineEntities = [
@@ -88,7 +89,6 @@ describe("Signatures work", function () {
       { c: { flag: { type: Flag } } },
       { c: { flag: { type: AnotherFlag } } },
     ];
-    console.log(...s.entities);
     expect(
       isOfType<{ [key: string]: ComponentType }>(entity.c, "flag")
     ).toBeTruthy();
@@ -103,11 +103,10 @@ describe("Signatures work", function () {
       c: { flag: { type: AnotherFlag } },
     });
   });
-  /*
   it("Empty signature returns all entities", function () {
     const engine = new Engine();
-    engine.addEntities(new Entity(), new Entity());
-    const builder = new SignatureBuilder(engine);
+    engine.addEntities({ c: { flag: { type: Flag } } }, { c: {} });
+    const builder = new SignatureBuilder<{ flag: Flag }>(engine);
     const signature = builder.build();
     expect(signature.listEntities().length).toEqual(engine.entities.length);
   });
@@ -117,7 +116,7 @@ describe("Signatures work", function () {
   });
   it("Signature includes the corresponding entity for inclusion", function () {
     const engine = new Engine();
-    const entity = new Entity();
+    const entity = createEntity({ c: {} });
     entity.addComponent({ type: MyComponent, value: "value" });
     entity.addComponent({ type: MyOtherComponent });
     engine.addEntities(entity, new Entity());
@@ -128,6 +127,7 @@ describe("Signatures work", function () {
     expect(signature.listEntities().length).not.toEqual(engine.entities.length);
     expect(signature.listEntities().length).not.toEqual(0);
   });
+  /*
   it("Signature includes the corresponding entity for exclusion", function () {
     const engine = new Engine();
     const entity = new Entity();
